@@ -2,7 +2,7 @@
 
 from pyscriptic.protocols import submit_protocol
 from pyscriptic.instructions import UncoverOp, CoverOp, SealOp, ThermocycleOp, \
-     PipetteOp, TransferGroup
+     ThermocycleStep, ThermocycleGroup, PipetteOp, TransferGroup
 from pyscriptic.refs import Reference
 
 refs = {
@@ -20,7 +20,33 @@ instructions = [
     ]),
     CoverOp("input_plate", lid="standard"),
     SealOp("pcr_plate"),
-    ThermocycleOp("pcr_plate"),
+    ThermocycleOp(
+        "pcr_plate",
+        # Note: The volume is not given in the original guide
+        volume="4:microliter",
+        groups=[
+            ThermocycleGroup(
+                cycles=1,
+                steps=[
+                    ThermocycleStep(duration="30:second", temperature="98:celsius"),
+                ],
+            ),
+            ThermocycleGroup(
+                cycles=35,
+                steps=[
+                    ThermocycleStep(duration="10:second", temperature="98:celsius"),
+                    ThermocycleStep(duration="55:second", temperature="72:celsius"),
+                ],
+            ),
+            ThermocycleGroup(
+                cycles=1,
+                steps=[
+                    ThermocycleStep(duration="420:second", temperature="72:celsius"),
+                    ThermocycleStep(duration="600:second", temperature="12:celsius"),
+                ],
+            ),
+        ],
+    ),
 ]
 
 submit_protocol(refs, instructions)
