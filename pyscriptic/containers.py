@@ -1,7 +1,7 @@
 
 from collections import namedtuple
 
-from pytranscriptic import settings, submit
+from pyscriptic import settings, submit
 
 # Note: All volumes are in microliters
 ContainerProperties = namedtuple(

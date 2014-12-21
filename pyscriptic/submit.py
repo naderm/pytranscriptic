@@ -1,7 +1,7 @@
 
 import requests, json
 
-from pytranscriptic import settings
+from pyscriptic import settings
 
 def get_request(relative_url):
     url = "{}/{}".format(
