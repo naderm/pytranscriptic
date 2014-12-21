@@ -1,5 +1,5 @@
 
-from pytranscriptic import settings, submit
+from pyscriptic import settings, submit
 
 def run(request, title="PyTranscript Run"):
     url = "{}/{}/runs".format(
