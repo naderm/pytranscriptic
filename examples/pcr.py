@@ -1,12 +1,13 @@
 # Conversion of https://www.transcriptic.com/guides/1-pcr.html
 
 from pyscriptic.protocols import submit_protocol
-from pyscriptic.instructions import *
+from pyscriptic.instructions import UncoverOp, CoverOp, SealOp, ThermocycleOp, \
+     PipetteOp, TransferGroup
 from pyscriptic.refs import Reference
 
 refs = {
-    "input_plate": Reference(container_id="ct15jdnddeaj", store="cold_20"),
-    "pcr_plate": Reference(new="96-pcr", store="cold_20"),
+    "input_plate": Reference(container_id="ct15jdnddeaj", store_where="cold_20"),
+    "pcr_plate": Reference(new="96-pcr", store_where="cold_20"),
 }
 
 instructions = [
