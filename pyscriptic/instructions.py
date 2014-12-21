@@ -1,14 +1,27 @@
 
 from pyscriptic.storage import STORAGES
+from pyscriptic.measures import check_volume, check_duration, check_speed, \
+     check_length, check_temperature, check_matter, check_flowrate
+
 # Reference: https://www.transcriptic.com/platform/#instructions
 class Operation:
-    pass
+    def to_dict(self):
+        return dict(
+            (key.rstrip("_"), getattr(self, key))
+            for key in dir(self)
+            if not key.startswith("_") and getattr(self, key) is not None
+            )
 
 # Liquid Handling
 # Note: all speeds are in microliters per second
 class PrePostMix:
     def __init__(self, volume, speed=None, repetitions=None):
-        pass
+        assert check_volume(volume)
+        assert speed is None or check_flowrate(speed)
+
+        self.volume = volume
+        self.speed = speed
+        self.repetitions = repetitions
 
 class TransferOp(Operation):
     op = "transfer"
@@ -16,20 +29,35 @@ class TransferOp(Operation):
     def __init__(self, from_well, to_well, volume,
                  aspiration_speed=None, dispense_speed=None,
                  mix_before=None, mix_after=None):
-        pass
+        assert check_volume(volume)
+        assert aspiration_speed is None or check_speed(aspiration_speed)
+        assert dispense_speed is None or check_speed(dispense_speed)
+
+        self.from_ = from_well
+        self.to = to_well
+        self.volume = volume
 
 class DistributeOp(Operation):
     op = "distribute"
 
     def __init__(self, from_well, to_wells, aspire_speed=None):
-        pass
+        assert aspire_speed is None or check_speed(aspire_speed)
+
+        self.from_ = from_well
+        self.to = to_wells
+        self.aspire_speed = aspire_speed
 
 class ConsolidateOp(Operation):
     op = "consolidate"
 
     def __init__(self, to_well, from_wells, dispense_speed=None,
                  mix_before=None):
-        pass
+        assert dispense_speed is None or check_speed(dispense_speed)
+
+        self.to = to_well
+        self.from_ = from_wells
+        self.dispense_speed = dispense_speed
+        self.mix_before = mix_before
 
 class MixOp(Operation):
     op = "mix"
@@ -38,7 +66,13 @@ class MixOp(Operation):
         """
         Default speed is 50 microliters per second
         """
-        pass
+        assert check_volume(volume)
+        assert speed is None or check_speed(speed)
+
+        self.well = well
+        self.volume = volume
+        self.speed = speed
+        self.repetitions = repetitions
 
 # Covers and Sealing
 class CoverOp(Operation):
@@ -46,6 +80,7 @@ class CoverOp(Operation):
 
     def __init__(self, container, lid):
         assert lid in ["standard", "universal", "low_evaporation"]
+
         self.object = container
         self.lid = lid
 
@@ -81,6 +116,7 @@ class SpinOp(Operation):
 
     def __init__(self, container, speed, duration):
         assert speed <= 4000
+
         self.object = container
         self.speed = speed
         self.duration = duration
@@ -90,6 +126,8 @@ class ThermocycleOp(Operation):
     op = "thermocycle"
 
     def __init__(self, container, volume):
+        assert check_volume(volume)
+
         self.container = container
         self.volume = volume
 
@@ -97,8 +135,11 @@ class ThermocycleOp(Operation):
 class IncubateOp(Operation):
     op = "incubate"
 
-    def __init__(container, where, duration, shaking):
+    def __init__(self, container, where, duration, shaking):
         assert where in STORAGES.keys()
+        assert check_duration(duration)
+        assert shaking in [True, False]
+
         self.container = container
         self.where = where
         self.duration = duration
@@ -114,6 +155,8 @@ class AbsorbanceOp(Operation):
         Wavelength in nanometers
         num_flashes default is 25
         """
+        assert check_length(wavelength)
+
         self.object = container
         self.wells = wells
         self.wavelength = wavelength
@@ -125,6 +168,9 @@ class FluorescenceOp(Operation):
 
     def __init__(self, container, wells, excitation, emission, dataref,
                  num_flashes=None):
+        assert check_length(excitation)
+        assert check_length(emission)
+
         self.object = container
         self.wells = wells
         self.excitation = excitation
@@ -154,6 +200,8 @@ class GelSeparateOp(Operation):
                           "agarose(12,1.2%)",
                           "agarose(8,0.8%)",]
         assert ladder in ["ladder1", "ladder2"]
+        assert check_duration(duration)
+
         self.objects = wells
         self.matrix = matrix
         self.ladder = ladder
