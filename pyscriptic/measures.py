@@ -31,7 +31,7 @@ def check_length(length):
 def check_temperature(temperature):
     return _check_measurement(
         temperature,
-        ["celcius"],
+        ["celsius"],
         )
 
 def check_matter(matter):
