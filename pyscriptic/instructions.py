@@ -14,6 +14,11 @@ class Operation:
 
 # Liquid Handling
 # Note: all speeds are in microliters per second
+class PipetteOp(Operation):
+    op = "pipette"
+    def __init__(self, groups):
+        self.groups = groups
+
 class PrePostMix:
     def __init__(self, volume, speed=None, repetitions=None):
         assert check_volume(volume)
@@ -23,7 +28,7 @@ class PrePostMix:
         self.speed = speed
         self.repetitions = repetitions
 
-class TransferOp(Operation):
+class TransferGroup(Operation):
     op = "transfer"
 
     def __init__(self, from_well, to_well, volume,
@@ -41,7 +46,7 @@ class TransferOp(Operation):
         self.mix_before = mix_before
         self.mix_after = mix_after
 
-class DistributeOp(Operation):
+class DistributeGroup(Operation):
     op = "distribute"
 
     def __init__(self, from_well, to_wells, aspire_speed=None):
@@ -51,7 +56,7 @@ class DistributeOp(Operation):
         self.to = to_wells
         self.aspire_speed = aspire_speed
 
-class ConsolidateOp(Operation):
+class ConsolidateGroup(Operation):
     op = "consolidate"
 
     def __init__(self, to_well, from_wells, dispense_speed=None,
@@ -63,7 +68,7 @@ class ConsolidateOp(Operation):
         self.dispense_speed = dispense_speed
         self.mix_before = mix_before
 
-class MixOp(Operation):
+class MixGroup(Operation):
     op = "mix"
 
     def __init__(self, well, volume, speed=None, repetitions=None):
