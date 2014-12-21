@@ -74,3 +74,18 @@ def list_containers():
     return submit.get_request(
         url,
         )
+
+def mail_container(container_id, address_id, condition):
+    assert condition in ["ambient", "dry_ice"]
+    url = "{}/containers/{}/mail".format(
+        settings.get_organization(),
+        container_id,
+        )
+    content = {
+        "address": address_id,
+        "condition": condition,
+        }
+    return submit.post_request(
+        url,
+        content,
+        )
