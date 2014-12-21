@@ -27,15 +27,19 @@ class TransferOp(Operation):
     op = "transfer"
 
     def __init__(self, from_well, to_well, volume,
-                 aspiration_speed=None, dispense_speed=None,
+                 aspirate_speed=None, dispense_speed=None,
                  mix_before=None, mix_after=None):
         assert check_volume(volume)
-        assert aspiration_speed is None or check_speed(aspiration_speed)
+        assert aspirate_speed is None or check_speed(aspirate_speed)
         assert dispense_speed is None or check_speed(dispense_speed)
 
         self.from_ = from_well
         self.to = to_well
         self.volume = volume
+        self.aspirate_speed = aspirate_speed
+        self.dispense_speed = dispense_speed
+        self.mix_before = mix_before
+        self.mix_after = mix_after
 
 class DistributeOp(Operation):
     op = "distribute"
