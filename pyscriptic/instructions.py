@@ -134,7 +134,7 @@ class SpinOp(Operation):
 class ThermocycleOp(Operation):
     op = "thermocycle"
 
-    def __init__(self, container, volume, groups, dyes, dataref, melting):
+    def __init__(self, container, volume, groups, dyes=None, dataref=None, melting=None):
         assert check_volume(volume)
 
         self.container = container
