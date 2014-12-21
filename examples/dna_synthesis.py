@@ -6,5 +6,8 @@ synthesize_oligo(
     name="pri1-F",
     sequence="acgtagtcgagtctgagtcagcgtacgtag",
     purity="desalt",
-    scale="20:nanomole",
+    # In the guide, the scale is 20:nanomole, but the documentation does not list
+    # this as a valid scale.
+    # Reference: https://www.transcriptic.com/platform/#ordering_assembly
+    scale="25:nanomole",
 )
