@@ -1,4 +1,5 @@
 
+import os
 
 BASE_URL = "https://secure.transcriptic.com"
 TRANSCRIPTIC_EMAIL = None
