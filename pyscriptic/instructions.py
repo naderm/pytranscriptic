@@ -134,11 +134,30 @@ class SpinOp(Operation):
 class ThermocycleOp(Operation):
     op = "thermocycle"
 
-    def __init__(self, container, volume):
+    def __init__(self, container, volume, groups, dyes, dataref, melting):
         assert check_volume(volume)
 
         self.container = container
         self.volume = volume
+        self.groups = groups
+        self.dyes = dyes
+        self.dataref = dataref
+        self.melting = melting
+
+class ThermocycleGroup:
+    def __init__(self, cycles, steps):
+        self.cycles = cycles
+        self.steps = steps
+
+class ThermocycleStep:
+    def __init__(self, duration, temperature, read=False):
+        assert check_duration(duration)
+        assert check_temperature(temperature)
+        assert read in [True, False]
+
+        self.duration = duration
+        self.temperature = temperature
+        self.read = read
 
 # Incubation
 class IncubateOp(Operation):
