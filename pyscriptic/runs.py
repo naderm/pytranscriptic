@@ -1,6 +1,24 @@
 
 from pyscriptic import settings, submit
 
+class RunProperties(object):
+    """
+
+    Attributes
+    ----------
+    run_id : str
+    title : str
+    created_at : ...
+    status : str
+    protocol : pyscriptic.protocols.Protocol
+    """
+    def __init__(self, run_id, title, created_at, status, protocol):
+        self.run_id = run_id
+        self.title = title
+        self.created_at = created_at
+        self.status = status
+        self.protocol = protocol
+
 def run(request, title="PyTranscript Run"):
     """
     Submits a run request for the currently active project. The request should
@@ -13,7 +31,7 @@ def run(request, title="PyTranscript Run"):
 
     Returns
     -------
-    run_id : int?
+    run_id : str
     """
 
     url = "{}/{}/runs".format(
@@ -36,7 +54,7 @@ def get_run(run_id):
 
     Parameters
     ----------
-    run_id : int?
+    run_id : str
 
     Returns
     -------
@@ -57,15 +75,9 @@ def list_runs():
 
     Returns
     -------
-    list of ...
+    list of dict of str, str
     """
-    url = "{}/{}".format(
-        settings.get_organization(),
-        settings.get_project(),
-        )
-    return submit.get_request(
-        url,
-        )
+    return project.get_project(settings.get_project()).runs
 
 def get_run_data(run_id):
     """
@@ -73,7 +85,7 @@ def get_run_data(run_id):
 
     Parameters
     ----------
-    run_id : int?
+    run_id : str
 
     Returns
     -------
