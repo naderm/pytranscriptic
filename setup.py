@@ -22,4 +22,5 @@ setup(
         "Programming Language :: Python :: 3.4",
         "Topic :: Scientific/Engineering",
     ],
+    test_suite="tests",
 )
