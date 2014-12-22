@@ -1,5 +1,6 @@
 
-from pyscriptic import settings, submit
+from pyscriptic import settings, submit, project
+from pyscriptic.protocols import Protocol
 
 class RunProperties(object):
     """
@@ -58,20 +59,31 @@ def get_run(run_id):
 
     Returns
     -------
-    ...
+    pyscriptic.runs.RunProperties
     """
     url = "{}/{}/runs/{}".format(
         settings.get_organization(),
         settings.get_project(),
         run_id,
         )
-    return submit.get_request(
+    response = submit.get_request(
         url,
         )
+    return RunProperties(
+        run_id=response["id"],
+        title=response["title"],
+        created_at=response["created_at"],
+        status=response["status"],
+        protocol=Protocol(
+            refs=response["protocol"]["refs"],
+            instructions=response["protocol"]["instructions"],
+        ),
+    )
 
 def list_runs():
     """
-    Lists all runs for the currently active project.
+    Lists all runs for the currently active project. Only returns run ids, run
+    properties must be queried individually.
 
     Returns
     -------
