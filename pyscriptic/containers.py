@@ -4,56 +4,56 @@ from collections import namedtuple
 from pyscriptic import settings, submit
 
 # Note: All volumes are in microliters
-ContainerProperties = namedtuple(
-    "ContainerProperties",
+ContainerType = namedtuple(
+    "ContainerType",
     ["title", "max_capacity", "dead_volume", "capabilities"],
     )
 
 CONTAINERS = {
-    "96-pcr": ContainerProperties(
+    "96-pcr": ContainerType(
         "96 well V-bottom (PCR) plate",
         160, 15,
         ["pipette", "sangerseq", "spin", "thermocycle", "incubate", "gel_separate"],
         ),
-    "96-flat": ContainerProperties(
+    "96-flat": ContainerType(
         "96 well flat-bottom optically clear plate",
         360, 20,
         ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
          "luminescence", "incubate", "gel_separate"],
         ),
-    "96-flat-uv": ContainerProperties(
+    "96-flat-uv": ContainerType(
         "96 well flat-bottom UV transparent plate",
         360, 20,
         ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
          "luminescence", "incubate", "gel_separate"],
         ),
-    "96-deep": ContainerProperties(
+    "96-deep": ContainerType(
         "96 well flat-bottom extended capacity optically opaque plate",
         2000, 15,
         ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
         ),
-    "384-pcr": ContainerProperties(
+    "384-pcr": ContainerType(
         "384 well V-bottom (PCR) plate",
         50, 8,
         ["pipette", "sangerseq", "spin", "thermocycle", "incubate", "gel_separate"],
         ),
-    "384-flat": ContainerProperties(
+    "384-flat": ContainerType(
         "384 well flat-bottom optically clear plate",
         112, 12,
         ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
          "luminescence", "incubate", "gel_separate"],
         ),
-    "pcr-0.5": ContainerProperties(
+    "pcr-0.5": ContainerType(
         "0.5 mL PCR tube",
         500, 15,
         ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
         ),
-    "micro-1.5": ContainerProperties(
+    "micro-1.5": ContainerType(
         "1.5 mL microtube",
         1500, 15,
         ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
         ),
-    "micro-2.0": ContainerProperties(
+    "micro-2.0": ContainerType(
         "2.0 mL microtube",
         2000, 15,
         ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
