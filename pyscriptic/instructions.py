@@ -35,8 +35,8 @@ class TransferGroup(Operation):
                  aspirate_speed=None, dispense_speed=None,
                  mix_before=None, mix_after=None):
         assert check_volume(volume)
-        assert aspirate_speed is None or check_speed(aspirate_speed)
-        assert dispense_speed is None or check_speed(dispense_speed)
+        assert aspirate_speed is None or check_flowrate(aspirate_speed)
+        assert dispense_speed is None or check_flowrate(dispense_speed)
 
         self.from_ = from_well
         self.to = to_well
@@ -50,7 +50,7 @@ class DistributeGroup(Operation):
     op = "distribute"
 
     def __init__(self, from_well, to_wells, aspire_speed=None):
-        assert aspire_speed is None or check_speed(aspire_speed)
+        assert aspire_speed is None or check_flowrate(aspire_speed)
 
         self.from_ = from_well
         self.to = to_wells
@@ -61,7 +61,7 @@ class ConsolidateGroup(Operation):
 
     def __init__(self, to_well, from_wells, dispense_speed=None,
                  mix_before=None):
-        assert dispense_speed is None or check_speed(dispense_speed)
+        assert dispense_speed is None or check_flowrate(dispense_speed)
 
         self.to = to_well
         self.from_ = from_wells
@@ -76,7 +76,7 @@ class MixGroup(Operation):
         Default speed is 50 microliters per second
         """
         assert check_volume(volume)
-        assert speed is None or check_speed(speed)
+        assert speed is None or check_flowrate(speed)
 
         self.well = well
         self.volume = volume
@@ -125,6 +125,8 @@ class SpinOp(Operation):
 
     def __init__(self, container, speed, duration):
         assert speed <= 4000
+        assert check_speed(speed)
+        assert check_duration(duration)
 
         self.object = container
         self.speed = speed
