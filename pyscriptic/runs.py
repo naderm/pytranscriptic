@@ -9,11 +9,14 @@ class RunProperties(object):
     ----------
     run_id : str
     title : str
-    created_at : ...
     status : str
     protocol : pyscriptic.protocols.Protocol
+    created_at : ...
+    warnings : list of ...
+    errors : list of ...
     """
-    def __init__(self, run_id, title, created_at, status, protocol):
+    def __init__(self, run_id, title, status, protocol=None,
+                 created_at=None, warnings=None, errors=None):
         self.run_id = run_id
         self.title = title
         self.created_at = created_at
@@ -32,7 +35,7 @@ def run(request, title="PyTranscript Run"):
 
     Returns
     -------
-    run_id : str
+    pyscriptic.protocols.RunProperties
     """
 
     url = "{}/{}/runs".format(
@@ -43,11 +46,17 @@ def run(request, title="PyTranscript Run"):
         "title": title,
         "request": request,
         }
-    run_id = submit.post_request(
+    response = submit.post_request(
         url,
         content,
-        )["id"]
-    return run_id
+        )
+    return RunProperties(
+        run_id=response["id"],
+        title=response["title"],
+        status=response["status"],
+        warnings=response["warnings"],
+        errors=response["errors"],
+        )
 
 def get_run(run_id):
     """
