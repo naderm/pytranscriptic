@@ -1,6 +1,5 @@
 
 from pyscriptic import settings, submit, project
-from pyscriptic.protocols import Protocol
 
 class RunProperties(object):
     """
@@ -72,6 +71,7 @@ def get_run(run_id):
     -------
     pyscriptic.runs.RunProperties
     """
+    from pyscriptic.protocols import Protocol
     url = "{}/{}/runs/{}".format(
         settings.get_organization(),
         settings.get_project(),
