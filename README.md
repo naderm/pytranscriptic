@@ -8,3 +8,7 @@ Python wrapper around Transcriptic's API. Currently written to support the α-5 
 ## Authors
 
 * Nader Morshed
+
+## Documentation
+
+Full documentation of the modules in this library can be found on <a href="http://pyscriptic.readthedocs.org/">Read the Docs</a>.
