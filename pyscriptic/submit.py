@@ -4,7 +4,7 @@ import requests, json
 
 from pyscriptic import settings
 
-def _pyobj_to_std_types(obj):
+def pyobj_to_std_types(obj):
     """
     Recursively converts a python object to be a string, integer, list, or
     dict. Handles class instances intelligently by converting non-private,
@@ -23,21 +23,25 @@ def _pyobj_to_std_types(obj):
     elif isinstance(obj, str):
         return obj
     elif isinstance(obj, list):
-        return [_pyobj_to_std_types(i) for i in obj]
+        return [pyobj_to_std_types(i) for i in obj]
     elif isinstance(obj, dict):
         return {
-            key: _pyobj_to_std_types(val)
+            key: pyobj_to_std_types(val)
             for key, val in obj.items()
             }
     elif isinstance(obj, object):
         return {
-            key.rstrip("_"): getattr(obj, key)
+            key.rstrip("_"): pyobj_to_std_types(getattr(obj, key))
             for key, value in getmembers(
                 obj,
                 lambda x: not ismethod(x) and x is not None,
                 )
             if not key.startswith("_")
             }
+    else:
+        raise Exception(
+            "Unable to convert type to standard type: {}".format(type(obj))
+            )
 
 def _get_headers():
     """
@@ -105,7 +109,7 @@ def post_request(relative_url, content):
         )
     response = requests.post(
         url,
-        json.dumps(_pyobj_to_std_types(content)),
+        json.dumps(pyobj_to_std_types(content)),
         headers=_get_headers(),
         )
     if response.status_code == 200:
