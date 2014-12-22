@@ -6,8 +6,6 @@ Notes
 .. [1] https://www.transcriptic.com/platform/#instr_storage
 """
 
-from inspect import ismethod, getmembers
-
 from pyscriptic.storage import STORAGE_LOCATIONS
 from pyscriptic.measures import check_volume, check_duration, check_speed, \
      check_length, check_temperature, check_flowrate
@@ -22,15 +20,7 @@ class Operation(object):
     ----------
     op : str
     """
-    def to_dict(self):
-        return dict(
-            (key.rstrip("_"), getattr(self, key))
-            for key, value in getmembers(
-                self,
-                lambda x: not ismethod(x) and x is not None,
-                )
-            if not key.startswith("_")
-            )
+    pass
 
 # Liquid Handling
 # Note: all speeds are in microliters per second
