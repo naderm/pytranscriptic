@@ -30,6 +30,10 @@ def create_project(project_id):
     Returns
     -------
     pyscriptic.project.ProjectProperties
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#projects_creating
     """
     url = "{}".format(
         settings.get_organization(),
@@ -48,6 +52,21 @@ def create_project(project_id):
         )
 
 def get_project(project_id):
+    """
+    Lists all information about a given project.
+
+    Parameters
+    ----------
+    project_id : str
+
+    Returns
+    -------
+    pyscriptic.project.ProjectProperties
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#projects_get
+    """
     url = "{}/{}".format(
         settings.get_organization(),
         project_id,
