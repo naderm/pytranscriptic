@@ -61,6 +61,16 @@ CONTAINERS = {
     }
 
 def get_container(container_id):
+    """
+
+    Parameters
+    ----------
+    container_id : str
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#containers_show
+    """
     url = "{}/containers/{}".format(
         settings.get_organization(),
         container_id,
@@ -70,12 +80,24 @@ def get_container(container_id):
         )
 
 def list_containers():
+    """
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#containers_index
+    """
     url = "containers"
     return submit.get_request(
         url,
         )
 
 def mail_container(container_id, address_id, condition):
+    """
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_storage
+    """
     assert condition in ["ambient", "dry_ice"]
     url = "{}/containers/{}/mail".format(
         settings.get_organization(),
