@@ -2,6 +2,7 @@
 
 from pyscriptic.protocols import synthesize_oligo
 
+# The guide says they are making oligos, but use the call for dsdna...
 synthesize_oligo(
     name="pri1-F",
     sequence="acgtagtcgagtctgagtcagcgtacgtag",
