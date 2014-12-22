@@ -97,5 +97,6 @@ def list_runs():
     Returns
     -------
     list of dict of str, str
+        Includes the ids and statuses of all runs.
     """
     return project.get_project(settings.get_project()).runs
