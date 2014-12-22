@@ -13,7 +13,15 @@ from pyscriptic.measures import check_volume, check_duration, check_speed, \
      check_length, check_temperature, check_flowrate
 
 # Reference:
-class Operation:
+class Operation(object):
+    """
+    Abstract class used to describe a single operation (a.k.a instruction) used
+    to build a larger protocol.
+
+    Attributes
+    ----------
+    op : str
+    """
     def to_dict(self):
         return dict(
             (key.rstrip("_"), getattr(self, key))
@@ -28,15 +36,29 @@ class Operation:
 # Note: all speeds are in microliters per second
 class PipetteOp(Operation):
     """
+    Attributes
+    ----------
+    groups : list of pyscriptic.instructions.PipetteGroup
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
     """
     op = "pipette"
+
     def __init__(self, groups):
         self.groups = groups
 
-class PrePostMix:
+class PrePostMix(object):
+    """
+    Describes a mixing operation before a transfer commences.
+
+    Attributes
+    ----------
+    volume : str
+    speed : str
+    repetitions : int
+    """
     def __init__(self, volume, speed=None, repetitions=None):
         assert check_volume(volume)
         assert speed is None or check_flowrate(speed)
@@ -45,7 +67,31 @@ class PrePostMix:
         self.speed = speed
         self.repetitions = repetitions
 
-class TransferGroup(Operation):
+class PipetteGroup(object):
+    """
+    Abstract class used to describe a group of pipetting operations to occur
+    using a single tip.
+    """
+    pass
+
+class TransferGroup(PipetteGroup):
+    """
+    Group used to describe a transfer operation, from one well to one well.
+
+    Attributes
+    ----------
+    from_well : str
+    to_well : str
+    volume : str
+    aspirate_speed : str
+    dispense_speed : str
+    mix_before : pyscriptic.instructions.PrePostMix
+    mix_after : pyscriptic.instructions.PrePostMix
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
+    """
     op = "transfer"
 
     def __init__(self, from_well, to_well, volume,
@@ -63,17 +109,46 @@ class TransferGroup(Operation):
         self.mix_before = mix_before
         self.mix_after = mix_after
 
-class DistributeGroup(Operation):
+class DistributeGroup(PipetteGroup):
+    """
+    Group used to describe a distribute operation, from one well to many wells.
+
+    Attributes
+    ----------
+    from_well : str
+    to_wells : list of dict of str, str
+    aspire_speed : str
+    mix_after : pyscriptic.instructions.PrePostMix
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
+    """
     op = "distribute"
 
-    def __init__(self, from_well, to_wells, aspire_speed=None):
+    def __init__(self, from_well, to_wells, aspire_speed=None, mix_after=None):
         assert aspire_speed is None or check_flowrate(aspire_speed)
 
         self.from_ = from_well
         self.to = to_wells
         self.aspire_speed = aspire_speed
+        self.mix_after = mix_after
 
-class ConsolidateGroup(Operation):
+class ConsolidateGroup(PipetteGroup):
+    """
+    Group used to describe a consolidate operation, from many wells to one well.
+
+    Attributes
+    ----------
+    to_well : str
+    from_wells : list of str
+    dispense_speed : str
+    mix_before : pyscriptic.instructions.PrePostMix
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
+    """
     op = "consolidate"
 
     def __init__(self, to_well, from_wells, dispense_speed=None,
@@ -85,7 +160,21 @@ class ConsolidateGroup(Operation):
         self.dispense_speed = dispense_speed
         self.mix_before = mix_before
 
-class MixGroup(Operation):
+class MixGroup(PipetteGroup):
+    """
+    Group used to describe a mix operation, all within one well.
+
+    Attributes
+    ----------
+    well : str
+    volume : str
+    speed : str
+    repetitions : int
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
+    """
     op = "mix"
 
     def __init__(self, well, volume, speed=None, repetitions=None):
@@ -182,6 +271,15 @@ class SpinOp(Operation):
 # Thermocycling
 class ThermocycleOp(Operation):
     """
+
+    Attributes
+    ----------
+    container : str
+    volume : str
+    groups : list of pyscriptic.instructions.ThermocycleGroup
+    dyes : dict of str, list of str
+    dataref : str
+    melting : pyscriptic.instructions.MeltingStep
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_thermocycling
@@ -198,12 +296,25 @@ class ThermocycleOp(Operation):
         self.dataref = dataref
         self.melting = melting
 
-class ThermocycleGroup:
+class ThermocycleGroup(object):
+    """
+    Attributes
+    ----------
+    cycles : int
+    steps : list of pyscriptic.instructions.ThermocycleStep
+    """
     def __init__(self, cycles, steps):
         self.cycles = cycles
         self.steps = steps
 
-class ThermocycleStep:
+class ThermocycleStep(object):
+    """
+    Attributes
+    ----------
+    duration : str
+    temperature : str
+    read : bool
+    """
     def __init__(self, duration, temperature, read=False):
         assert check_duration(duration)
         assert check_temperature(temperature)
@@ -212,6 +323,28 @@ class ThermocycleStep:
         self.duration = duration
         self.temperature = temperature
         self.read = read
+
+class MeltingStep(object):
+    """
+    Optional melting step to run at the end of the protocol.
+
+    Attributes
+    ----------
+    start : str
+    end : str
+    increment : str
+    rate : str
+    """
+    def __init__(self, start, end, increment, rate):
+        assert check_temperature(start)
+        assert check_temperature(end)
+        assert check_temperature(increment)
+        assert check_duration(rate)
+
+        self.start = start
+        self.end = end
+        self.increment = increment
+        self.rate = rate
 
 # Incubation
 class IncubateOp(Operation):
