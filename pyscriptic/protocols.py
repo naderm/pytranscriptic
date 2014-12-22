@@ -5,11 +5,11 @@ def submit_protocol(refs, instructions, title="PyTranscript Run"):
     request = {
         "refs": refs,
         "instructions": instructions,
-        }
+    }
     runs.run(
         request,
         title=title,
-        )
+    )
 
 def synthesize_oligo(name, sequence, purity, scale):
     assert purity in ["desalt", "hplc", "page"]
@@ -18,15 +18,33 @@ def synthesize_oligo(name, sequence, purity, scale):
 
     title = "Synthesize {}".format(name)
     request = {
-        "type": "synthesize",
-        "sequence": {
-            "name": name,
+        "type": "oligo",
+        "name": name,
+        "data": {
             "sequence": sequence,
+            "purity": purity,
+            "scale": scale,
         },
-        "purity": purity,
-        "scale": scale,
-        }
+    }
     runs.run(
         request,
         title=title,
-        )
+    )
+
+def synthesize_dsdna(name, sequence):
+    title = "Synthesize {}".format(name)
+    request = {
+        "type": "synthesize",
+        "name": name,
+        "data": {
+            "sequence": sequence,
+        },
+    }
+    runs.run(
+        request,
+        title=title,
+    )
+
+# Implementation awaiting further documentation
+def synthesize_plasmid():
+    pass
