@@ -2,7 +2,12 @@
 from pyscriptic.containers import CONTAINERS
 from pyscriptic.storage import STORAGES
 
-class Reference:
+class Reference(object):
+    """
+    Contains the information to either create or link a given container to a
+    reference through a protocol via an intermediate name.
+    """
+
     def __init__(self, container_id=None, new=None, store_where=None, discard=False):
         assert (container_id is not None) != (new is not None)
         assert (store_where is not None) != (discard)
