@@ -20,9 +20,11 @@ class RunProperties(object):
                  created_at=None, warnings=None, errors=None):
         self.run_id = run_id
         self.title = title
-        self.created_at = created_at
         self.status = status
         self.protocol = protocol
+        self.created_at = created_at
+        self.warnings = warnings
+        self.errors = errors
 
 def run(request, title="PyTranscript Run"):
     """
