@@ -1,4 +1,10 @@
+"""
+Describes the list of storage options available for containers.
 
+Notes
+-----
+.. [1] https://www.transcriptic.com/platform/#instr_storage
+"""
 from collections import namedtuple
 
 StorageProperties = namedtuple(
