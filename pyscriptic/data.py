@@ -32,6 +32,10 @@ def get_run_data(run_id):
     Returns
     -------
     pyscriptic.data.DataProperties
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#data_querying
     """
     url = "{}/{}/runs/{}/data".format(
         settings.get_organization(),
@@ -51,3 +55,10 @@ def get_run_data(run_id):
         )
 
 # Get monitoring data (Coming soon)
+def get_monitoring_data():
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#data_monitoring
+    """
+    raise NotImplementedError
