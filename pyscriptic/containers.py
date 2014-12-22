@@ -60,6 +60,38 @@ CONTAINERS = {
         ),
     }
 
+class ContainerProperties(object):
+    """
+
+    Attributes
+    ----------
+    container_id : str
+    location : str
+    container_type : str
+    well_count : int
+    well_type : str
+    well_depth_mm : int
+    well_volume_ul : int
+    well_coating : str
+    sterile : bool
+    device : ...
+    aliquots : ...
+    """
+    def __init__(self, container_id, location, container_type, well_count,
+                 well_type, well_depth_mm, well_volume_ul, well_coating,
+                 sterile, device, aliquots):
+        self.container_id = container_id
+        self.location = location
+        self.container_type = container_type
+        self.well_count = well_count
+        self.well_type = well_type
+        self.well_depth_mm = well_depth_mm
+        self.well_volume_ul = well_volume_ul
+        self.well_coating = well_coating
+        self.sterile = sterile
+        self.device = device
+        self.aliquots = aliquots
+
 def get_container(container_id):
     """
     Retrieves information about a given container available within the currently
@@ -69,6 +101,10 @@ def get_container(container_id):
     ----------
     container_id : str
 
+    Returns
+    -------
+    pyscriptic.containers.ContainerProperties
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#containers_show
@@ -77,22 +113,33 @@ def get_container(container_id):
         settings.get_organization(),
         container_id,
         )
-    return submit.get_request(
+    response = submit.get_request(
         url,
+        )
+    return ContainerProperties(
+        **response
         )
 
 def list_containers():
     """
     Lists all containers available within the currently active organization.
 
+    Returns
+    -------
+    list of pyscriptic.containers.ContainerProperties
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#containers_index
     """
     url = "containers"
-    return submit.get_request(
+    response = submit.get_request(
         url,
         )
+    return [
+        ContainerProperties(**i)
+        for i in response
+        ]
 
 def mail_container(container_id, address_id, condition):
     """
@@ -103,6 +150,10 @@ def mail_container(container_id, address_id, condition):
     container_id : str
     address_id : str
     condition : str
+
+    Returns
+    -------
+    id : str
 
     Notes
     -----
@@ -117,7 +168,8 @@ def mail_container(container_id, address_id, condition):
         "address": address_id,
         "condition": condition,
         }
-    return submit.post_request(
+    response = submit.post_request(
         url,
         content,
         )
+    return response["id"]
