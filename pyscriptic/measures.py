@@ -1,3 +1,10 @@
+"""
+Validates measurements associated with instruction descriptions.
+
+Notes
+-----
+.. [1] https://www.transcriptic.com/platform/#instructions
+"""
 
 def _check_measurement(measurement, allowed_units):
     """
