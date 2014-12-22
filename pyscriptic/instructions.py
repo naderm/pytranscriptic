@@ -322,16 +322,35 @@ class FlowCytometryOp(Operation):
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_flow
     """
+    op = "flow"
+
     def __init__(self):
         raise NotImplementedError
 
 # Liquid Chromatography (Coming soon)
-class LiquidChromatographyOp(Operation):
+class HPLCOp(Operation):
     """
+    High Performance Liquid Chromatography Operation
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_lc
     """
+    op = "hplc"
+
+    def __init__(self):
+        raise NotImplementedError
+
+class FPLCOp(Operation):
+    """
+    Fast Protein Liquid Chromatography Operation
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_lc
+    """
+    op = "fplc"
+
     def __init__(self):
         raise NotImplementedError
 
@@ -342,5 +361,7 @@ class MassSpectrometryOp(Operation):
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_mspec
     """
+    op = "mspec-quad"
+
     def __init__(self):
         raise NotImplementedError
