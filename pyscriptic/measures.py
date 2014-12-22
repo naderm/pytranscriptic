@@ -18,7 +18,7 @@ def _check_measurement(measurement, allowed_units):
     """
     quantity, unit = measurement.split(":", 1)
     return unit in allowed_units and \
-      quantity.isdigit()
+      all(i.isdigit() or i == "." for i in quantity)
 
 def check_volume(volume):
     """
