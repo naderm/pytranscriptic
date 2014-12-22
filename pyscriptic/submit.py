@@ -6,6 +6,10 @@ from pyscriptic import settings
 def _get_headers():
     """
     Gets all headers needed to access Transcriptic's services.
+
+    Returns
+    -------
+    dict of str, str
     """
     return {
         "X-User-Email": settings.get_email(),
