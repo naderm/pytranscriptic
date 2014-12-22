@@ -316,7 +316,31 @@ class GelSeparateOp(Operation):
         self.dataref = dataref
 
 # Flow Cytometry (Coming Soon)
+class FlowCytometryOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_flow
+    """
+    def __init__(self):
+        raise NotImplementedError
 
 # Liquid Chromatography (Coming soon)
+class LiquidChromatographyOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_lc
+    """
+    def __init__(self):
+        raise NotImplementedError
 
 # Mass Spectrometry (Coming soon)
+class MassSpectrometryOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_mspec
+    """
+    def __init__(self):
+        raise NotImplementedError
