@@ -11,14 +11,30 @@ class PipetteOpTests(TestCase):
             "base/url",
         )
 
-    def test_email():
-        pass
+    def test_email(self):
+        settings.TRANSCRIPTIC_EMAIL = "me@example.com"
+        self.assertEqual(
+            settings.get_email(),
+            "me@example.com",
+        )
 
-    def test_key():
-        pass
+    def test_key(self):
+        settings.TRANSCRIPTIC_KEY = "SuPeRsEcReT"
+        self.assertEqual(
+            settings.get_key(),
+            "SuPeRsEcReT",
+        )
 
-    def test_organization():
-        pass
+    def test_organization(self):
+        settings.ORGANIZATION = "org"
+        self.assertEqual(
+            settings.get_organization(),
+            "org",
+        )
 
-    def test_project():
-        pass
+    def test_project(self):
+        settings.PROJECT = "proj"
+        self.assertEqual(
+            settings.get_project(),
+            "proj",
+        )
