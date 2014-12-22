@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from pyscriptic import settings
 
-class PipetteOpTests(TestCase):
+class GetSettingsTests(TestCase):
     def test_base_url(self):
         settings.BASE_URL = "base/url"
         self.assertEqual(
