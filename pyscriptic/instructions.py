@@ -1,4 +1,6 @@
 
+from inspect import ismethod, getmembers
+
 from pyscriptic.storage import STORAGES
 from pyscriptic.measures import check_volume, check_duration, check_speed, \
      check_length, check_temperature, check_matter, check_flowrate
@@ -8,8 +10,11 @@ class Operation:
     def to_dict(self):
         return dict(
             (key.rstrip("_"), getattr(self, key))
-            for key in dir(self)
-            if not key.startswith("_") and getattr(self, key) is not None
+            for key, value in getmembers(
+                self,
+                lambda x: not ismethod(x) and x is not None,
+                )
+            if not key.startswith("_")
             )
 
 # Liquid Handling
