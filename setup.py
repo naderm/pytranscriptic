@@ -6,10 +6,7 @@ setup(
     author="Nader Morshed",
     url="https://github.com/naderm/pytranscriptic",
     author_email="morshed.nader@gmail.com",
-    packages=find_packages(
-        "pyscriptic",
-        exclude=["tests", "tests.*", "*.tests", "*.tests.*"],
-    ),
+    packages=find_packages("pyscriptic"),
     package_dir={"": "pyscriptic"},
     description="Python wrapper around transcriptic API",
     classifiers=[
