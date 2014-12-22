@@ -26,6 +26,15 @@ def get_run(run_id):
         url,
         )
 
+def list_runs():
+    url = "{}/{}".format(
+        settings.get_organization(),
+        settings.get_project(),
+        )
+    return submit.get_request(
+        url,
+        )
+
 def get_run_data(run_id):
     url = "{}/{}/runs/{}/data".format(
         settings.get_organization(),
@@ -36,11 +45,4 @@ def get_run_data(run_id):
         url,
         )
 
-def list_runs():
-    url = "{}/{}".format(
-        settings.get_organization(),
-        settings.get_project(),
-        )
-    return submit.get_request(
-        url,
-        )
+# Get monitoring data (Coming soon)
