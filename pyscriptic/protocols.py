@@ -89,4 +89,4 @@ def synthesize_plasmid():
     """
     Not yet implemented.
     """
-    pass
+    raise NotImplementedError
