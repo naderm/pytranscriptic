@@ -481,6 +481,11 @@ class LuminescenceOp(Operation):
         self.dataref = dataref
 
 # Gel Electrophoresis
+ALLOWED_GEL_MATRICES = [
+    "agarose(96,2.0%)", "agarose(48,4.0%)", "agarose(48,2.0%)",
+    "agarose(12,1.2%)", "agarose(8,0.8%)",
+    ]
+ALLOWED_GEL_LADDERS = ["ladder1", "ladder2"]
 class GelSeparateOp(Operation):
     """
     Attributes
@@ -498,12 +503,8 @@ class GelSeparateOp(Operation):
     op = "gel_sperate"
 
     def __init__(self, wells, matrix, ladder, duration, dataref):
-        assert matrix in ["agarose(96,2.0%)",
-                          "agarose(48,4.0%)",
-                          "agarose(48,2.0%)",
-                          "agarose(12,1.2%)",
-                          "agarose(8,0.8%)",]
-        assert ladder in ["ladder1", "ladder2"]
+        assert matrix in ALLOWED_GEL_MATRICES
+        assert ladder in ALLOWED_GEL_LADDERS
         assert check_duration(duration)
 
         self.objects = wells
