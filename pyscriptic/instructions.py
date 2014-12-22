@@ -1,3 +1,10 @@
+"""
+Classes used to describe instructions that combine together to make a protocol.
+
+Notes
+-----
+.. [1] https://www.transcriptic.com/platform/#instr_storage
+"""
 
 from inspect import ismethod, getmembers
 
@@ -5,7 +12,7 @@ from pyscriptic.storage import STORAGE_LOCATIONS
 from pyscriptic.measures import check_volume, check_duration, check_speed, \
      check_length, check_temperature, check_flowrate
 
-# Reference: https://www.transcriptic.com/platform/#instructions
+# Reference:
 class Operation:
     def to_dict(self):
         return dict(
@@ -20,6 +27,11 @@ class Operation:
 # Liquid Handling
 # Note: all speeds are in microliters per second
 class PipetteOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
+    """
     op = "pipette"
     def __init__(self, groups):
         self.groups = groups
@@ -90,6 +102,11 @@ class MixGroup(Operation):
 
 # Covers and Sealing
 class CoverOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_covers_and_seals
+    """
     op = "cover"
 
     def __init__(self, container, lid):
@@ -99,18 +116,33 @@ class CoverOp(Operation):
         self.lid = lid
 
 class UncoverOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_covers_and_seals
+    """
     op = "uncover"
 
     def __init__(self, container):
         self.container = container
 
 class SealOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_covers_and_seals
+    """
     op = "seal"
 
     def __init__(self, container):
         self.container = container
 
 class UnsealOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_covers_and_seals
+    """
     op = "unseal"
 
     def __init__(self, container):
@@ -118,6 +150,11 @@ class UnsealOp(Operation):
 
 # DNA Sequencing
 class SangerSeqOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_sequencing
+    """
     op = "sangerseq"
 
     def __init__(self, container, dataref):
@@ -126,6 +163,11 @@ class SangerSeqOp(Operation):
 
 # Centrifugation
 class SpinOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_centrifugation
+    """
     op = "spin"
 
     def __init__(self, container, speed, duration):
@@ -139,6 +181,11 @@ class SpinOp(Operation):
 
 # Thermocycling
 class ThermocycleOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_thermocycling
+    """
     op = "thermocycle"
 
     def __init__(self, container, volume, groups, dyes=None, dataref=None, melting=None):
@@ -168,6 +215,11 @@ class ThermocycleStep:
 
 # Incubation
 class IncubateOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_incubation
+    """
     op = "incubate"
 
     def __init__(self, container, where, duration, shaking):
@@ -182,6 +234,11 @@ class IncubateOp(Operation):
 
 # Spectrophotometry
 class AbsorbanceOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_spectroscopy
+    """
     op = "absorbance"
 
     def __init__(self, container, wells, wavelength, dataref,
@@ -199,6 +256,11 @@ class AbsorbanceOp(Operation):
         self.dataref = dataref
 
 class FluorescenceOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_spectroscopy
+    """
     op = "fluorescence"
 
     def __init__(self, container, wells, excitation, emission, dataref,
@@ -214,6 +276,11 @@ class FluorescenceOp(Operation):
         self.dataref = dataref
 
 class LuminescenceOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_spectroscopy
+    """
     op = "luminescence"
 
     def __init__(self, container, wells, dataref):
@@ -226,6 +293,11 @@ class LuminescenceOp(Operation):
 
 # Gel Electrophoresis
 class GelSeparateOp(Operation):
+    """
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_electrophoresis
+    """
     op = "gel_sperate"
 
     def __init__(self, wells, matrix, ladder, duration, dataref):
