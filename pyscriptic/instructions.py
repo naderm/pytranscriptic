@@ -1,9 +1,9 @@
 
 from inspect import ismethod, getmembers
 
-from pyscriptic.storage import STORAGES
+from pyscriptic.storage import STORAGE_LOCATIONS
 from pyscriptic.measures import check_volume, check_duration, check_speed, \
-     check_length, check_temperature, check_matter, check_flowrate
+     check_length, check_temperature, check_flowrate
 
 # Reference: https://www.transcriptic.com/platform/#instructions
 class Operation:
@@ -171,7 +171,7 @@ class IncubateOp(Operation):
     op = "incubate"
 
     def __init__(self, container, where, duration, shaking):
-        assert where in STORAGES.keys()
+        assert where in STORAGE_LOCATIONS.keys()
         assert check_duration(duration)
         assert shaking in [True, False]
 

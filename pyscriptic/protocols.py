@@ -1,7 +1,18 @@
 
 from pyscriptic import runs
 
-def submit_protocol(refs, instructions, title="PyTranscript Run"):
+class Protocol(object):
+    """
+    Attributes
+    ----------
+    refs : list of pyscriptic.refs.Reference
+    instructions : list of pyscriptic.instructions.Operation
+    """
+    def __init__(self, refs, instructions):
+        self.refs = refs
+        self.instructions = instructions
+
+def submit_protocol(protocol, title="PyTranscript Run"):
     """
     Submits a protocol to run on Transcript's platform. A protocol is made up of
     a list of references, linking container names to the actual aliquots in
@@ -9,14 +20,13 @@ def submit_protocol(refs, instructions, title="PyTranscript Run"):
 
     Parameters
     ----------
-    refs : list of pyscriptic.refs.Reference
-    instructions : list of pyscriptic.instructions.Operation
+    protocol : pyscriptic.protocols.Protocol
     title : str, optional
     """
 
     request = {
-        "refs": refs,
-        "instructions": instructions,
+        "refs": protocol.refs,
+        "instructions": protocol.instructions,
     }
     runs.run(
         request,

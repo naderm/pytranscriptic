@@ -6,7 +6,7 @@ StorageProperties = namedtuple(
     ["description"]
     )
 
-STORAGES = {
+STORAGE_LOCATIONS = {
     "ambient": StorageProperties(
         "may vary between 19.5 degC and 22 degC",
         ),

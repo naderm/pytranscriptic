@@ -1,6 +1,6 @@
 # Conversion of https://www.transcriptic.com/guides/3-growth-curves.html
 
-from pyscriptic.protocols import submit_protocol
+from pyscriptic.protocols import Protocol, submit_protocol
 from pyscriptic.instructions import IncubateOp, AbsorbanceOp
 from pyscriptic.refs import Reference
 
@@ -28,4 +28,4 @@ for i in range(5):
     )
     instructions.append(absorbance)
 
-submit_protocol(refs, instructions)
+submit_protocol(Protocol(refs, instructions))

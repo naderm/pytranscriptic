@@ -1,6 +1,6 @@
 # Conversion of https://www.transcriptic.com/guides/1-pcr.html
 
-from pyscriptic.protocols import submit_protocol
+from pyscriptic.protocols import Protocol, submit_protocol
 from pyscriptic.instructions import UncoverOp, CoverOp, SealOp, ThermocycleOp, \
      ThermocycleStep, ThermocycleGroup, PipetteOp, TransferGroup
 from pyscriptic.refs import Reference
@@ -49,4 +49,4 @@ instructions = [
     ),
 ]
 
-submit_protocol(refs, instructions)
+submit_protocol(Protocol(refs, instructions))
