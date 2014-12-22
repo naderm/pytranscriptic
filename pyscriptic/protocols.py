@@ -22,13 +22,21 @@ def submit_protocol(protocol, title="PyTranscript Run"):
     ----------
     protocol : pyscriptic.protocols.Protocol
     title : str, optional
+
+    Returns
+    -------
+    pyscryptic.runs.RunProperties
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#protocols
     """
 
     request = {
         "refs": protocol.refs,
         "instructions": protocol.instructions,
     }
-    runs.run(
+    return runs.run(
         request,
         title=title,
     )
