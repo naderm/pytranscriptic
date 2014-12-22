@@ -6,6 +6,17 @@ class Reference(object):
     """
     Contains the information to either create or link a given container to a
     reference through a protocol via an intermediate name.
+
+    Attributes
+    ----------
+    container_id : str
+    new : str
+    store : dict of str, str
+    discard bool
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#instr_access
     """
 
     def __init__(self, container_id=None, new=None, store_where=None, discard=False):
