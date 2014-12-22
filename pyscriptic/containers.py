@@ -80,6 +80,8 @@ class ContainerProperties(object):
     def __init__(self, container_id, location, container_type, well_count,
                  well_type, well_depth_mm, well_volume_ul, well_coating,
                  sterile, device, aliquots):
+        assert container_type in CONTAINERS.keys()
+
         self.container_id = container_id
         self.location = location
         self.container_type = container_type
