@@ -37,7 +37,7 @@ def run(request, title="PyTranscript Run"):
 
     Returns
     -------
-    pyscriptic.protocols.RunProperties
+    pyscriptic.runs.RunProperties
     """
 
     url = "{}/{}/runs".format(
