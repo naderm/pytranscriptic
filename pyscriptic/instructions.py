@@ -160,10 +160,10 @@ class ConsolidateGroup(PipetteGroup):
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
     """
-    def __init__(self, to_well, from_wells, dispense_speed=None,
+    def __init__(self, to, from_wells, dispense_speed=None,
                  mix_before=None):
         self.consolidate = [TransferDetails(
-            to=to_well,
+            to=to,
             from_=from_wells,
             dispense_speed=dispense_speed,
             mix_before=mix_before,
