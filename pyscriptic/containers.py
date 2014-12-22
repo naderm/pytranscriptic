@@ -62,6 +62,8 @@ CONTAINERS = {
 
 def get_container(container_id):
     """
+    Retrieves information about a given container available within the currently
+    active organization.
 
     Parameters
     ----------
@@ -81,6 +83,7 @@ def get_container(container_id):
 
 def list_containers():
     """
+    Lists all containers available within the currently active organization.
 
     Notes
     -----
@@ -93,6 +96,13 @@ def list_containers():
 
 def mail_container(container_id, address_id, condition):
     """
+    Sends a request to mail a container to a given address.
+
+    Parameters
+    ----------
+    container_id : str
+    address_id : str
+    condition : str
 
     Notes
     -----
