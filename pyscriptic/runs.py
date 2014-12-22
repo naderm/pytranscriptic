@@ -11,9 +11,11 @@ class RunProperties(object):
     title : str
     status : str
     protocol : pyscriptic.protocols.Protocol
-    created_at : ...
-    warnings : list of ...
-    errors : list of ...
+    created_at : str
+    warnings : list of dict of str, str
+        Dicts each include the code and message for each error.
+    errors : list of dict of str, str
+        Dicts each include the code and message for each error.
     """
     def __init__(self, run_id, title, status, protocol=None,
                  created_at=None, warnings=None, errors=None):
