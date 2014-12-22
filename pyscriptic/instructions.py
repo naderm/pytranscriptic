@@ -192,6 +192,11 @@ class MixGroup(PipetteGroup):
 # Covers and Sealing
 class CoverOp(Operation):
     """
+    Attributes
+    ----------
+    container : str
+    lid : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_covers_and_seals
@@ -206,6 +211,10 @@ class CoverOp(Operation):
 
 class UncoverOp(Operation):
     """
+    Attributes
+    ----------
+    container : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_covers_and_seals
@@ -217,6 +226,10 @@ class UncoverOp(Operation):
 
 class SealOp(Operation):
     """
+    Attributes
+    ----------
+    container : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_covers_and_seals
@@ -228,6 +241,10 @@ class SealOp(Operation):
 
 class UnsealOp(Operation):
     """
+    Attributes
+    ----------
+    container : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_covers_and_seals
@@ -240,6 +257,11 @@ class UnsealOp(Operation):
 # DNA Sequencing
 class SangerSeqOp(Operation):
     """
+    Attributes
+    ----------
+    container : str
+    dataref : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_sequencing
@@ -253,6 +275,12 @@ class SangerSeqOp(Operation):
 # Centrifugation
 class SpinOp(Operation):
     """
+    Attributes
+    ----------
+    container : str
+    speed : str
+    duration : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_centrifugation
@@ -271,7 +299,6 @@ class SpinOp(Operation):
 # Thermocycling
 class ThermocycleOp(Operation):
     """
-
     Attributes
     ----------
     container : str
@@ -280,6 +307,7 @@ class ThermocycleOp(Operation):
     dyes : dict of str, list of str
     dataref : str
     melting : pyscriptic.instructions.MeltingStep
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_thermocycling
@@ -349,6 +377,13 @@ class MeltingStep(object):
 # Incubation
 class IncubateOp(Operation):
     """
+    Attributes
+    ----------
+    container : str
+    where : str
+    duration : str
+    shaking : bool
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_incubation
@@ -368,6 +403,12 @@ class IncubateOp(Operation):
 # Spectrophotometry
 class AbsorbanceOp(Operation):
     """
+    Attributes
+    ----------
+    object : str
+    wells : list of str
+    wavelength : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_spectroscopy
@@ -390,6 +431,12 @@ class AbsorbanceOp(Operation):
 
 class FluorescenceOp(Operation):
     """
+    Attributes
+    ----------
+    object : str
+    wells : list of str
+    wavelength : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_spectroscopy
@@ -410,6 +457,12 @@ class FluorescenceOp(Operation):
 
 class LuminescenceOp(Operation):
     """
+    Attributes
+    ----------
+    object : str
+    wells : list of str
+    wavelength : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_spectroscopy
@@ -427,6 +480,14 @@ class LuminescenceOp(Operation):
 # Gel Electrophoresis
 class GelSeparateOp(Operation):
     """
+    Attributes
+    ----------
+    wells : list of str
+    matrix : str
+    ladder : str
+    duration : str
+    dataref : str
+
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_electrophoresis
