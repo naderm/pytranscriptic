@@ -2,6 +2,18 @@
 from pyscriptic import runs
 
 def submit_protocol(refs, instructions, title="PyTranscript Run"):
+    """
+    Submits a protocol to run on Transcript's platform. A protocol is made up of
+    a list of references, linking container names to the actual aliquots in
+    storage / to be stored on completion.
+
+    Parameters
+    ----------
+    refs : list of pyscriptic.refs.Reference
+    instructions : list of pyscriptic.instructions.Operation
+    title : str, optional
+    """
+
     request = {
         "refs": refs,
         "instructions": instructions,
@@ -12,6 +24,20 @@ def submit_protocol(refs, instructions, title="PyTranscript Run"):
     )
 
 def synthesize_oligo(name, sequence, purity, scale):
+    """
+    Synthesizes a short oligonuclotide of < 200 bases.
+
+    Parameters
+    ----------
+    name : str
+    sequence : str
+    purity : str
+    scale : str
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#ordering_assembly
+    """
     assert purity in ["desalt", "hplc", "page"]
     assert scale in ["25:nanomole", "50:nanomole", "200:nanomole",
                      "1:micromole", "10:micromole"]
@@ -32,6 +58,19 @@ def synthesize_oligo(name, sequence, purity, scale):
     )
 
 def synthesize_dsdna(name, sequence):
+    """
+    Synthesizes a longer stretch of dsDNA, up to 3 kb in size.
+
+    Parameters
+    ----------
+    name : str
+    sequence : str
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#ordering_assembly
+    """
+
     title = "Synthesize {}".format(name)
     request = {
         "type": "synthesize",
@@ -47,4 +86,7 @@ def synthesize_dsdna(name, sequence):
 
 # Implementation awaiting further documentation
 def synthesize_plasmid():
+    """
+    Not yet implemented.
+    """
     pass
