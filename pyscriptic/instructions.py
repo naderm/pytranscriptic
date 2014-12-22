@@ -64,26 +64,52 @@ class PipetteGroup(object):
     """
     pass
 
+class TransferDetails(object):
+    """
+    Attributes
+    ----------
+    from_ : str
+    to : str
+    well : str
+    volume : str
+    speed : str
+    aspirate_speed : str
+    dispense_speed : str
+    mix_before : pyscriptic.instructions.PrePostMix
+    mix_after : pyscriptic.instructions.PrePostMix
+    repetitions : int
+    """
+    def __init__(self, from_=None, to=None, well=None, volume=None,
+                 speed=None, aspirate_speed=None, dispense_speed=None,
+                 mix_before=None, mix_after=None, repetitions=None):
+        assert volume is None or check_volume(volume)
+        assert speed is None or check_flowrate(speed)
+        assert aspirate_speed is None or check_flowrate(aspirate_speed)
+        assert dispense_speed is None or check_flowrate(dispense_speed)
+
+        self.from_ = from_
+        self.to = to
+        self.well = well
+        self.volume = volume
+        self.speed = speed
+        self.aspirate_speed = aspirate_speed
+        self.dispense_speed = dispense_speed
+        self.mix_before = mix_before
+        self.mix_after = mix_after
+        self.repetitions = repetitions
+
 class TransferGroup(PipetteGroup):
     """
     Group used to describe a transfer operation, from one well to one well.
 
     Attributes
     ----------
-    from_well : str
-    to_well : str
-    volume : str
-    aspirate_speed : str
-    dispense_speed : str
-    mix_before : pyscriptic.instructions.PrePostMix
-    mix_after : pyscriptic.instructions.PrePostMix
+    transfer : list of pyscriptic.instructions.TranferDetails
 
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
     """
-    op = "transfer"
-
     def __init__(self, from_well, to_well, volume,
                  aspirate_speed=None, dispense_speed=None,
                  mix_before=None, mix_after=None):
@@ -91,13 +117,15 @@ class TransferGroup(PipetteGroup):
         assert aspirate_speed is None or check_flowrate(aspirate_speed)
         assert dispense_speed is None or check_flowrate(dispense_speed)
 
-        self.from_ = from_well
-        self.to = to_well
-        self.volume = volume
-        self.aspirate_speed = aspirate_speed
-        self.dispense_speed = dispense_speed
-        self.mix_before = mix_before
-        self.mix_after = mix_after
+        self.transfer = [TransferDetails(
+            from_=from_well,
+            to=to_well,
+            volume=volume,
+            aspirate_speed=aspirate_speed,
+            dispense_speed=dispense_speed,
+            mix_before=mix_before,
+            mix_after=mix_after,
+        )]
 
 class DistributeGroup(PipetteGroup):
     """
@@ -105,24 +133,20 @@ class DistributeGroup(PipetteGroup):
 
     Attributes
     ----------
-    from_well : str
-    to_wells : list of dict of str, str
-    aspire_speed : str
-    mix_after : pyscriptic.instructions.PrePostMix
+    distribute : list of pyscriptic.instructions.TranferDetails
 
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
     """
-    op = "distribute"
-
-    def __init__(self, from_well, to_wells, aspire_speed=None, mix_after=None):
-        assert aspire_speed is None or check_flowrate(aspire_speed)
-
-        self.from_ = from_well
-        self.to = to_wells
-        self.aspire_speed = aspire_speed
-        self.mix_after = mix_after
+    def __init__(self, from_well, to_wells, aspirate_speed=None,
+                 mix_after=None):
+        self.distribute = [TransferDetails(
+            from_=from_well,
+            to=to_wells,
+            aspirate_speed=aspirate_speed,
+            mix_after=mix_after,
+        )]
 
 class ConsolidateGroup(PipetteGroup):
     """
@@ -130,25 +154,20 @@ class ConsolidateGroup(PipetteGroup):
 
     Attributes
     ----------
-    to_well : str
-    from_wells : list of str
-    dispense_speed : str
-    mix_before : pyscriptic.instructions.PrePostMix
+    consolidate : list of pyscriptic.instructions.TranferDetails
 
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
     """
-    op = "consolidate"
-
     def __init__(self, to_well, from_wells, dispense_speed=None,
                  mix_before=None):
-        assert dispense_speed is None or check_flowrate(dispense_speed)
-
-        self.to = to_well
-        self.from_ = from_wells
-        self.dispense_speed = dispense_speed
-        self.mix_before = mix_before
+        self.consolidate = [TransferDetails(
+            to=to_well,
+            from_=from_wells,
+            dispense_speed=dispense_speed,
+            mix_before=mix_before,
+        )]
 
 class MixGroup(PipetteGroup):
     """
@@ -156,28 +175,22 @@ class MixGroup(PipetteGroup):
 
     Attributes
     ----------
-    well : str
-    volume : str
-    speed : str
-    repetitions : int
+    mix : list of pyscriptic.instructions.TranferDetails
 
     Notes
     -----
     .. [1] https://www.transcriptic.com/platform/#instr_liquid_handling
     """
-    op = "mix"
-
     def __init__(self, well, volume, speed=None, repetitions=None):
         """
         Default speed is 50 microliters per second
         """
-        assert check_volume(volume)
-        assert speed is None or check_flowrate(speed)
-
-        self.well = well
-        self.volume = volume
-        self.speed = speed
-        self.repetitions = repetitions
+        self.mix = [TransferDetails(
+            well=well,
+            volume=volume,
+            speed=speed,
+            repetitions=repetitions,
+        )]
 
 # Covers and Sealing
 class CoverOp(Operation):
