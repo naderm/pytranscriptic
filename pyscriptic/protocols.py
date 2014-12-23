@@ -12,7 +12,7 @@ class Protocol(object):
         self.refs = refs
         self.instructions = instructions
 
-def submit_protocol(protocol, title="PyTranscript Run"):
+def submit_protocol(protocol, title="PyTranscript Run", dry_run=False):
     """
     Submits a protocol to run on Transcript's platform. A protocol is made up of
     a list of references, linking container names to the actual aliquots in
@@ -22,6 +22,7 @@ def submit_protocol(protocol, title="PyTranscript Run"):
     ----------
     protocol : pyscriptic.protocols.Protocol
     title : str, optional
+    dry_run : bool, optional
 
     Returns
     -------
@@ -39,6 +40,7 @@ def submit_protocol(protocol, title="PyTranscript Run"):
     return runs.run(
         request,
         title=title,
+        dry_run=dry_run,
     )
 
 def synthesize_oligo(name, sequence, purity, scale):

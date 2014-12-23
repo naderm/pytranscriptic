@@ -1,4 +1,7 @@
 
+from __future__ import print_function
+import json
+
 from pyscriptic import settings, submit, project
 
 class RunProperties(object):
@@ -26,7 +29,7 @@ class RunProperties(object):
         self.warnings = warnings
         self.errors = errors
 
-def run(request, title="PyTranscript Run"):
+def run(request, title="PyTranscript Run", dry_run=False):
     """
     Submits a run request for the currently active project. The request should
     be in the form of a json description of the low or high-level protocol.
@@ -35,6 +38,7 @@ def run(request, title="PyTranscript Run"):
     ----------
     request : dict
     title : str, optional
+    dry_run : bool, optional
 
     Returns
     -------
@@ -49,17 +53,20 @@ def run(request, title="PyTranscript Run"):
         "title": title,
         "request": request,
         }
-    response = submit.post_request(
-        url,
-        content,
-        )
-    return RunProperties(
-        run_id=response["id"],
-        title=response["title"],
-        status=response["status"],
-        warnings=response["warnings"],
-        errors=response["errors"],
-        )
+    if dry_run:
+        print(json.dumps(content, indent=2))
+    else:
+        response = submit.post_request(
+            url,
+            content,
+            )
+        return RunProperties(
+            run_id=response["id"],
+            title=response["title"],
+            status=response["status"],
+            warnings=response["warnings"],
+            errors=response["errors"],
+            )
 
 def get_run(run_id):
     """
