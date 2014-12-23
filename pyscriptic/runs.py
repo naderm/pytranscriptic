@@ -54,8 +54,8 @@ def run(request, title="PyTranscript Run", dry_run=False):
         "request": request,
         }
     if dry_run:
-        print("Posting to {}:".format(url))
-        print(json.dumps(content, indent=2))
+        print("Posting to \"{}/{}\":".format(settings.get_base_url(), url))
+        print(json.dumps(submit.pyobj_to_std_types(content), indent=2))
     else:
         response = submit.post_request(
             url,
