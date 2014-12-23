@@ -1,14 +1,14 @@
 # Conversion of https://www.transcriptic.com/guides/0-getting-started.html
 
 from pyscriptic import settings
-from pyscriptic.protocols import synthesize_oligo
+from pyscriptic.protocols import submit_protocol, synthesize_oligo
 
 # Email and key can be set here, too, or read from environmental variables
-settings.PROJECT = "Project Name"
-settings.ORGANIZATION = "Organization Name"
+settings.PROJECT = "Project_Name"
+settings.ORGANIZATION = "Organization_Name"
 
 # The guide says they are making oligos, but use the call for dsdna...
-synthesize_oligo(
+protocol = synthesize_oligo(
     name="pri1-F",
     sequence="acgtagtcgagtctgagtcagcgtacgtag",
     purity="desalt",
@@ -17,3 +17,4 @@ synthesize_oligo(
     # Reference: https://www.transcriptic.com/platform/#ordering_assembly
     scale="25:nanomole",
 )
+submit_protocol(protocol, title="Synthesize pri1-F", dry_run=True)

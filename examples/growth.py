@@ -6,8 +6,8 @@ from pyscriptic.instructions import IncubateOp, AbsorbanceOp
 from pyscriptic.refs import Reference
 
 # Email and key can be set here, too, or read from environmental variables
-settings.PROJECT = "Project Name"
-settings.ORGANIZATION = "Organization Name"
+settings.PROJECT = "Project_Name"
+settings.ORGANIZATION = "Organization_Name"
 
 refs = {
     "my_plate": Reference(container_id="ct1553vwp7p46", store_where="cold_20"),
@@ -33,4 +33,4 @@ for i in range(5):
     )
     instructions.append(absorbance)
 
-submit_protocol(Protocol(refs, instructions))
+submit_protocol(Protocol(refs, instructions), dry_run=True)

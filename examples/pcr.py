@@ -7,8 +7,8 @@ from pyscriptic.instructions import UncoverOp, CoverOp, SealOp, ThermocycleOp, \
 from pyscriptic.refs import Reference
 
 # Email and key can be set here, too, or read from environmental variables
-settings.PROJECT = "Project Name"
-settings.ORGANIZATION = "Organization Name"
+settings.PROJECT = "Project_Name"
+settings.ORGANIZATION = "Organization_Name"
 
 refs = {
     "input_plate": Reference(container_id="ct15jdnddeaj", store_where="cold_20"),
@@ -54,4 +54,4 @@ instructions = [
     ),
 ]
 
-submit_protocol(Protocol(refs, instructions))
+submit_protocol(Protocol(refs, instructions), dry_run=True)
