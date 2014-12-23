@@ -43,7 +43,7 @@ def submit_protocol(protocol, title="PyTranscript Run", dry_run=False):
         dry_run=dry_run,
     )
 
-def synthesize_oligo(name, sequence, purity, scale):
+def synthesize_oligo(name, sequence, purity, scale, dry_run=False):
     """
     Synthesizes a short oligonuclotide of < 200 bases.
 
@@ -53,6 +53,7 @@ def synthesize_oligo(name, sequence, purity, scale):
     sequence : str
     purity : str
     scale : str
+    dry_run : bool, optional
 
     Notes
     -----
@@ -75,9 +76,10 @@ def synthesize_oligo(name, sequence, purity, scale):
     runs.run(
         request,
         title=title,
+        dry_run=dry_run,
     )
 
-def synthesize_dsdna(name, sequence):
+def synthesize_dsdna(name, sequence, dry_run=False):
     """
     Synthesizes a longer stretch of dsDNA, up to 3 kb in size.
 
@@ -85,6 +87,7 @@ def synthesize_dsdna(name, sequence):
     ----------
     name : str
     sequence : str
+    dry_run : bool, optional
 
     Notes
     -----
@@ -102,6 +105,7 @@ def synthesize_dsdna(name, sequence):
     runs.run(
         request,
         title=title,
+        dry_run=dry_run,
     )
 
 # Implementation awaiting further documentation
