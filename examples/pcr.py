@@ -1,9 +1,14 @@
 # Conversion of https://www.transcriptic.com/guides/1-pcr.html
 
+from pyscriptic import settings
 from pyscriptic.protocols import Protocol, submit_protocol
 from pyscriptic.instructions import UncoverOp, CoverOp, SealOp, ThermocycleOp, \
      ThermocycleStep, ThermocycleGroup, PipetteOp, TransferGroup
 from pyscriptic.refs import Reference
+
+# Email and key can be set here, too, or read from environmental variables
+settings.PROJECT = "Project Name"
+settings.ORGANIZATION = "Organization Name"
 
 refs = {
     "input_plate": Reference(container_id="ct15jdnddeaj", store_where="cold_20"),

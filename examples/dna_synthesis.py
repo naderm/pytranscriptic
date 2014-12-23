@@ -1,6 +1,11 @@
 # Conversion of https://www.transcriptic.com/guides/0-getting-started.html
 
+from pyscriptic import settings
 from pyscriptic.protocols import synthesize_oligo
+
+# Email and key can be set here, too, or read from environmental variables
+settings.PROJECT = "Project Name"
+settings.ORGANIZATION = "Organization Name"
 
 # The guide says they are making oligos, but use the call for dsdna...
 synthesize_oligo(
