@@ -1,13 +1,28 @@
 
-from collections import namedtuple
-
 from pyscriptic import settings, submit
 
 # Note: All volumes are in microliters
-ContainerType = namedtuple(
-    "ContainerType",
-    ["title", "wells", "max_well_capacity", "well_dead_volume", "capabilities"],
-    )
+class ContainerType(object):
+    """
+    Attributes
+    ----------
+    title : str
+    wells : int
+    max_well_capacity : float
+        Max volume capacity for each well, in microliters.
+    well_dead_volume : float
+        Well dead volume, in microliters.
+    capabilities : list of str
+        List of supported instructions that can be performed on this container
+        type.
+    """
+    def __init__(self, title, wells, max_well_capacity, well_dead_volume,
+                 capabilities):
+        self.title = title
+        self.wells = wells
+        self.max_well_capacity = max_well_capacity
+        self.well_dead_volume = well_dead_volume
+        self.capabilities = capabilities
 
 CONTAINERS = {
     "96-pcr": ContainerType(
