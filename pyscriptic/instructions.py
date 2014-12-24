@@ -68,7 +68,7 @@ class TransferDetails(object):
     """
     Attributes
     ----------
-    from_ : str
+    source : str
     to : str
     well : str
     volume : str
@@ -79,7 +79,7 @@ class TransferDetails(object):
     mix_after : pyscriptic.instructions.PrePostMix
     repetitions : int
     """
-    def __init__(self, from_=None, to=None, well=None, volume=None,
+    def __init__(self, source=None, to=None, well=None, volume=None,
                  speed=None, aspirate_speed=None, dispense_speed=None,
                  mix_before=None, mix_after=None, repetitions=None):
         assert volume is None or check_volume(volume)
@@ -87,7 +87,7 @@ class TransferDetails(object):
         assert aspirate_speed is None or check_flowrate(aspirate_speed)
         assert dispense_speed is None or check_flowrate(dispense_speed)
 
-        self.from_ = from_
+        self.source = source
         self.to = to
         self.well = well
         self.volume = volume
@@ -118,7 +118,7 @@ class TransferGroup(PipetteGroup):
         assert dispense_speed is None or check_flowrate(dispense_speed)
 
         self.transfer = [TransferDetails(
-            from_=from_well,
+            source=from_well,
             to=to_well,
             volume=volume,
             aspirate_speed=aspirate_speed,
@@ -142,7 +142,7 @@ class DistributeGroup(PipetteGroup):
     def __init__(self, from_well, to_wells, aspirate_speed=None,
                  mix_after=None):
         self.distribute = [TransferDetails(
-            from_=from_well,
+            source=from_well,
             to=to_wells,
             aspirate_speed=aspirate_speed,
             mix_after=mix_after,
@@ -164,7 +164,7 @@ class ConsolidateGroup(PipetteGroup):
                  mix_before=None):
         self.consolidate = [TransferDetails(
             to=to,
-            from_=from_wells,
+            source=from_wells,
             dispense_speed=dispense_speed,
             mix_before=mix_before,
         )]
