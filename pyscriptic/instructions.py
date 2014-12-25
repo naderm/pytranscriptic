@@ -28,7 +28,7 @@ class PipetteOp(Operation):
     """
     Attributes
     ----------
-    groups : list of pyscriptic.instructions.PipetteGroup
+    groups : list of :class:`pyscriptic.instructions.PipetteGroup`
 
     Notes
     -----
@@ -75,8 +75,8 @@ class TransferDetails(object):
     speed : str
     aspirate_speed : str
     dispense_speed : str
-    mix_before : pyscriptic.instructions.PrePostMix
-    mix_after : pyscriptic.instructions.PrePostMix
+    mix_before : :class:`pyscriptic.instructions.PrePostMix`
+    mix_after : :class:`pyscriptic.instructions.PrePostMix`
     repetitions : int
     """
     def __init__(self, from_=None, to=None, well=None, volume=None,
@@ -104,7 +104,7 @@ class TransferGroup(PipetteGroup):
 
     Attributes
     ----------
-    transfer : list of pyscriptic.instructions.TranferDetails
+    transfer : list of :class:`pyscriptic.instructions.TranferDetails`
 
     Notes
     -----
@@ -133,7 +133,7 @@ class DistributeGroup(PipetteGroup):
 
     Attributes
     ----------
-    distribute : list of pyscriptic.instructions.TranferDetails
+    distribute : list of :class:`pyscriptic.instructions.TranferDetails`
 
     Notes
     -----
@@ -154,7 +154,7 @@ class ConsolidateGroup(PipetteGroup):
 
     Attributes
     ----------
-    consolidate : list of pyscriptic.instructions.TranferDetails
+    consolidate : list of :class:`pyscriptic.instructions.TranferDetails`
 
     Notes
     -----
@@ -175,7 +175,7 @@ class MixGroup(PipetteGroup):
 
     Attributes
     ----------
-    mix : list of pyscriptic.instructions.TranferDetails
+    mix : list of :class:`pyscriptic.instructions.TranferDetails`
 
     Notes
     -----
@@ -306,10 +306,10 @@ class ThermocycleOp(Operation):
     ----------
     container : str
     volume : str
-    groups : list of pyscriptic.instructions.ThermocycleGroup
+    groups : list of :class:`pyscriptic.instructions.ThermocycleGroup`
     dyes : dict of str, list of str
     dataref : str
-    melting : pyscriptic.instructions.MeltingStep
+    melting : :class:`pyscriptic.instructions.MeltingStep`
 
     Notes
     -----
@@ -332,7 +332,7 @@ class ThermocycleGroup(object):
     Attributes
     ----------
     cycles : int
-    steps : list of pyscriptic.instructions.ThermocycleStep
+    steps : list of :class:`pyscriptic.instructions.ThermocycleStep`
     """
     def __init__(self, cycles, steps):
         self.cycles = cycles
