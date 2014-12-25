@@ -133,7 +133,7 @@ class DistributeGroup(PipetteGroup):
 
     Attributes
     ----------
-    distribute : list of :class:`pyscriptic.instructions.TranferDetails`
+    distribute : list of :class:`pyscriptic.instructions.TransferDetails`
 
     Notes
     -----
@@ -154,7 +154,7 @@ class ConsolidateGroup(PipetteGroup):
 
     Attributes
     ----------
-    consolidate : list of :class:`pyscriptic.instructions.TranferDetails`
+    consolidate : list of :class:`pyscriptic.instructions.TransferDetails`
 
     Notes
     -----
@@ -175,7 +175,7 @@ class MixGroup(PipetteGroup):
 
     Attributes
     ----------
-    mix : list of :class:`pyscriptic.instructions.TranferDetails`
+    mix : list of :class:`pyscriptic.instructions.TransferDetails`
 
     Notes
     -----
