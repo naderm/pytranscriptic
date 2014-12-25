@@ -32,6 +32,7 @@ sys.path.insert(0, os.path.abspath(base_dir))
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx.ext.intersphinx',
     'numpydoc',
 ]
 
