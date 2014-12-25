@@ -1,13 +1,17 @@
 
 from pyscriptic import settings, submit
 
-# Note: All volumes are in microliters
 class ContainerType(object):
     """
+    Lists information about a particular container type, such as a 96-well
+    plate.
+
     Attributes
     ----------
     title : str
     wells : int
+        Number of wells in the container. Wells can be referenced using either
+        a 1-indexed number (i.e. 1-96) or by row and column (i.e. A1-H12).
     max_well_capacity : float
         Max volume capacity for each well, in microliters.
     well_dead_volume : float
@@ -26,12 +30,14 @@ class ContainerType(object):
 
 class ContainerProperties(object):
     """
+    Lists the properties about a particular instance of a container, such as
+    where that container is stored and what liquids it contains.
 
     Attributes
     ----------
     container_id : str
     location : str
-    container_type : str
+    container_type : ContainerType
     well_count : int
     well_type : str
     well_depth_mm : int
@@ -44,8 +50,6 @@ class ContainerProperties(object):
     def __init__(self, container_id, location, container_type, well_count,
                  well_type, well_depth_mm, well_volume_ul, well_coating,
                  sterile, device, aliquots):
-        assert container_type in CONTAINERS.keys()
-
         self.container_id = container_id
         self.location = location
         self.container_type = container_type
@@ -193,10 +197,12 @@ def _container_properties_from_response(response):
     -------
     ContainerProperties
     """
+    assert response["container_type"] in CONTAINERS.keys()
+
     return ContainerProperties(
         container_id=response["id"],
         location=response["location"],
-        container_type=response["container_type"],
+        container_type=CONTAINERS[response["container_type"]],
         well_count=response["well_count"],
         well_type=response["well_type"],
         well_depth_mm=response["well_depth_mm"],
