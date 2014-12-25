@@ -30,5 +30,3 @@ class Reference(object):
         self.new = new
         self.store = {"where": store_where}
         self.discard = discard
-
-    # XXX: Convert to json somehow...
