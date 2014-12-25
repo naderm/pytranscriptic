@@ -104,7 +104,7 @@ class TransferGroup(PipetteGroup):
 
     Attributes
     ----------
-    transfer : list of :class:`pyscriptic.instructions.TranferDetails`
+    transfer : list of :class:`pyscriptic.instructions.TransferDetails`
 
     Notes
     -----
