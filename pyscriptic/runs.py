@@ -12,7 +12,7 @@ class RunProperties(object):
     run_id : str
     title : str
     status : str
-    protocol : pyscriptic.protocols.Protocol
+    protocol : :class:`pyscriptic.protocols.Protocol`
     created_at : str
     warnings : list of dict of str, str
         Dicts each include the code and message for each error.
@@ -42,7 +42,7 @@ def run(request, title="PyTranscript Run", dry_run=False):
 
     Returns
     -------
-    pyscriptic.runs.RunProperties
+    :class:`pyscriptic.runs.RunProperties`
     """
 
     url = "{}/{}/runs".format(
@@ -79,7 +79,7 @@ def get_run(run_id):
 
     Returns
     -------
-    pyscriptic.runs.RunProperties
+    :class:`pyscriptic.runs.RunProperties`
     """
     from pyscriptic.protocols import Protocol
     url = "{}/{}/runs/{}".format(

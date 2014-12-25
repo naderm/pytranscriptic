@@ -1,12 +1,27 @@
+"""
+Protocols build upon instructions, allowing users to list the liquid
+transfer, processing, and measurement steps used to construct an entire
+experiment.
 
+Please note that this library does not perform any protocol
+validations. Protocols are only validated for correctness after they are
+submitted to run on Transcriptic's platform.
+"""
 from pyscriptic import runs
 
 class Protocol(object):
     """
+    Protocols are composed of a list of instructions, along with a mapping of
+    container names to the containers IDs available in storage.
+
     Attributes
     ----------
-    refs : list of pyscriptic.refs.Reference
-    instructions : list of pyscriptic.instructions.Operation
+    refs : list of :class:`pyscriptic.refs.Reference`
+    instructions : list of :class:`pyscriptic.instructions.Operation`
+
+    Notes
+    -----
+    .. [1] https://www.transcriptic.com/platform/#protocols
     """
     def __init__(self, refs, instructions):
         self.refs = refs
@@ -22,13 +37,13 @@ def submit_protocol(protocol, title="PyTranscript Run", dry_run=False):
 
     Parameters
     ----------
-    protocol : pyscriptic.protocols.Protocol or dict
+    protocol : :class:`pyscriptic.protocols.Protocol` or dict
     title : str, optional
     dry_run : bool, optional
 
     Returns
     -------
-    pyscryptic.runs.RunProperties
+    :class:`pyscryptic.runs.RunProperties`
 
     Notes
     -----

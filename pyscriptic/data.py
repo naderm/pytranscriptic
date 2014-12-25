@@ -31,7 +31,7 @@ def get_run_data(run_id):
 
     Returns
     -------
-    pyscriptic.data.DataProperties
+    :class:`pyscriptic.data.DataProperties`
 
     Notes
     -----

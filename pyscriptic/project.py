@@ -29,7 +29,7 @@ def create_project(project_id):
 
     Returns
     -------
-    pyscriptic.project.ProjectProperties
+    :class:`pyscriptic.project.ProjectProperties`
 
     Notes
     -----
@@ -61,7 +61,7 @@ def get_project(project_id):
 
     Returns
     -------
-    pyscriptic.project.ProjectProperties
+    :class:`pyscriptic.project.ProjectProperties`
 
     Notes
     -----
