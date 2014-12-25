@@ -24,57 +24,6 @@ class ContainerType(object):
         self.well_dead_volume = well_dead_volume
         self.capabilities = capabilities
 
-CONTAINERS = {
-    "96-pcr": ContainerType(
-        "96 well V-bottom (PCR) plate",
-        96, 160, 15,
-        ["pipette", "sangerseq", "spin", "thermocycle", "incubate", "gel_separate"],
-        ),
-    "96-flat": ContainerType(
-        "96 well flat-bottom optically clear plate",
-        96, 360, 20,
-        ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
-         "luminescence", "incubate", "gel_separate"],
-        ),
-    "96-flat-uv": ContainerType(
-        "96 well flat-bottom UV transparent plate",
-        96, 360, 20,
-        ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
-         "luminescence", "incubate", "gel_separate"],
-        ),
-    "96-deep": ContainerType(
-        "96 well flat-bottom extended capacity optically opaque plate",
-        96, 2000, 15,
-        ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
-        ),
-    "384-pcr": ContainerType(
-        "384 well V-bottom (PCR) plate",
-        384, 50, 8,
-        ["pipette", "sangerseq", "spin", "thermocycle", "incubate", "gel_separate"],
-        ),
-    "384-flat": ContainerType(
-        "384 well flat-bottom optically clear plate",
-        384, 112, 12,
-        ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
-         "luminescence", "incubate", "gel_separate"],
-        ),
-    "pcr-0.5": ContainerType(
-        "0.5 mL PCR tube",
-        1, 500, 15,
-        ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
-        ),
-    "micro-1.5": ContainerType(
-        "1.5 mL microtube",
-        1, 1500, 15,
-        ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
-        ),
-    "micro-2.0": ContainerType(
-        "2.0 mL microtube",
-        1, 2000, 15,
-        ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
-        ),
-    }
-
 class ContainerProperties(object):
     """
 
@@ -89,8 +38,8 @@ class ContainerProperties(object):
     well_volume_ul : int
     well_coating : str
     sterile : bool
-    device : ...
-    aliquots : ...
+    device : ContainerDevice
+    aliquots : list of ContainerAliquot
     """
     def __init__(self, container_id, location, container_type, well_count,
                  well_type, well_depth_mm, well_volume_ul, well_coating,
@@ -108,6 +57,155 @@ class ContainerProperties(object):
         self.sterile = sterile
         self.device = device
         self.aliquots = aliquots
+
+class ContainerDevice(object):
+    """
+    Attributes
+    ----------
+    device_id : str
+    name : str
+    make : str
+    model : str
+    device_class : str
+    """
+    def __init__(self, device_id, name, make, model, device_class):
+        self.device_id = device_id
+        self.name = name
+        self.make = make
+        self.model = model
+        self.device_class = device_class
+
+class ContainerAliquot(object):
+    """
+    Attributes
+    ----------
+    aliquot_id : str
+    volume_ul : float
+    concentration_um : float
+    mass_mg : float
+    created_by_run_id : str
+    well_idx : str
+    """
+    def __init__(self, aliquot_id, volume_ul, concentration_um, mass_mg,
+                 created_by_run_id, well_idx):
+        self.aliquot_id = aliquot_id
+        self.volume_ul = volume_ul
+        self.concentration_um = concentration_um
+        self.mass_mg = mass_mg
+        self.created_by_run_id = created_by_run_id
+        self.well_idx = well_idx
+
+CONTAINERS = {
+    "96-pcr": ContainerType(
+        "96 well V-bottom (PCR) plate",
+        96, 160, 15,
+        ["pipette", "sangerseq", "spin", "thermocycle", "incubate", "gel_separate"],
+    ),
+    "96-flat": ContainerType(
+        "96 well flat-bottom optically clear plate",
+        96, 360, 20,
+        ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
+         "luminescence", "incubate", "gel_separate"],
+    ),
+    "96-flat-uv": ContainerType(
+        "96 well flat-bottom UV transparent plate",
+        96, 360, 20,
+        ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
+         "luminescence", "incubate", "gel_separate"],
+    ),
+    "96-deep": ContainerType(
+        "96 well flat-bottom extended capacity optically opaque plate",
+        96, 2000, 15,
+        ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
+    ),
+    "384-pcr": ContainerType(
+        "384 well V-bottom (PCR) plate",
+        384, 50, 8,
+        ["pipette", "sangerseq", "spin", "thermocycle", "incubate", "gel_separate"],
+    ),
+    "384-flat": ContainerType(
+        "384 well flat-bottom optically clear plate",
+        384, 112, 12,
+        ["pipette", "sangerseq", "spin", "absorbance", "fluorescence",
+         "luminescence", "incubate", "gel_separate"],
+    ),
+    "pcr-0.5": ContainerType(
+        "0.5 mL PCR tube",
+        1, 500, 15,
+        ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
+    ),
+    "micro-1.5": ContainerType(
+        "1.5 mL microtube",
+        1, 1500, 15,
+        ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
+    ),
+    "micro-2.0": ContainerType(
+        "2.0 mL microtube",
+        1, 2000, 15,
+        ["pipette", "sangerseq", "spin", "incubate", "gel_separate"],
+    ),
+}
+
+def _device_from_response(response):
+    """
+    Parameters
+    ----------
+    response : dict of str, str
+
+    Returns
+    -------
+    ContainerDevice
+    """
+    return ContainerDevice(
+        device_id=response["id"],
+        name=response["name"],
+        make=response["make"],
+        model=response["model"],
+        device_class=response["device_class"],
+    )
+
+def _aliquot_from_response(response):
+    """
+    Parameters
+    ----------
+    response : dict
+
+    Returns
+    -------
+    ContainerAliquot
+    """
+    return ContainerAliquot(
+        aliquot_id=response["id"],
+        volume_ul=response["volume_ul"],
+        concentration_um=response["concentration_um"],
+        mass_mg=response["mass_mg"],
+        created_by_run_id=response["created_by_run_id"],
+        well_idx=response["well_idx"],
+    )
+
+def _container_properties_from_response(response):
+    """
+    Parameters
+    ----------
+    dict
+
+    Returns
+    -------
+    ContainerProperties
+    """
+    return ContainerProperties(
+        container_id=response["id"],
+        location=response["location"],
+        container_type=response["container_type"],
+        well_count=response["well_count"],
+        well_type=response["well_type"],
+        well_depth_mm=response["well_depth_mm"],
+        well_volume_ul=response["well_volume_ul"],
+        well_coating=response["well_coating"],
+        sterile=response["sterile"],
+        device=_device_from_response(response["device"]),
+        aliquots=[_aliquot_from_response(i) for i in response["aliquots"]],
+    )
 
 def get_container(container_id):
     """
@@ -129,13 +227,11 @@ def get_container(container_id):
     url = "{}/containers/{}".format(
         settings.get_organization(),
         container_id,
-        )
+    )
     response = submit.get_request(
         url,
-        )
-    return ContainerProperties(
-        **response
-        )
+    )
+    return _container_properties_from_response(response)
 
 def list_containers():
     """
@@ -152,11 +248,8 @@ def list_containers():
     url = "containers"
     response = submit.get_request(
         url,
-        )
-    return [
-        ContainerProperties(**i)
-        for i in response
-        ]
+    )
+    return [_container_properties_from_response(i) for i in response]
 
 def mail_container(container_id, address_id, condition):
     """
@@ -180,13 +273,13 @@ def mail_container(container_id, address_id, condition):
     url = "{}/containers/{}/mail".format(
         settings.get_organization(),
         container_id,
-        )
+    )
     content = {
         "address": address_id,
         "condition": condition,
-        }
+    }
     response = submit.post_request(
         url,
         content,
-        )
+    )
     return response["id"]
