@@ -37,15 +37,15 @@ class ContainerProperties(object):
     ----------
     container_id : str
     location : str
-    container_type : pyscriptic.containers.ContainerType
+    container_type : :class:`pyscriptic.containers.ContainerType`
     well_count : int
     well_type : str
     well_depth_mm : int
     well_volume_ul : int
     well_coating : str
     sterile : bool
-    device : pyscriptic.containers.ContainerDevice
-    aliquots : list of pyscriptic.containers.ContainerAliquot
+    device : :class:`pyscriptic.containers.ContainerDevice`
+    aliquots : list of :class:`pyscriptic.containers.ContainerAliquot`
     """
     def __init__(self, container_id, location, container_type, well_count,
                  well_type, well_depth_mm, well_volume_ul, well_coating,
@@ -224,7 +224,7 @@ def get_container(container_id):
 
     Returns
     -------
-    pyscriptic.containers.ContainerProperties
+    :class:`pyscriptic.containers.ContainerProperties`
 
     Notes
     -----
@@ -245,7 +245,7 @@ def list_containers():
 
     Returns
     -------
-    list of pyscriptic.containers.ContainerProperties
+    list of :class:`pyscriptic.containers.ContainerProperties`
 
     Notes
     -----
