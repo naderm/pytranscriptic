@@ -7,6 +7,9 @@ Please note that this library does not perform any protocol
 validations. Protocols are only validated for correctness after they are
 submitted to run on Transcriptic's platform.
 """
+
+import warnings
+
 from pyscriptic import runs
 
 class UnboundProtocol(object):
@@ -46,6 +49,11 @@ class UnboundProtocol(object):
             if name not in refs:
                 raise KeyError("Missing link for container name: {}"
                                .format(name))
+
+        for name in refs:
+            if name not in self.refs:
+                warnings.warn("Reference \"{}\" is not used in this protocol"
+                              .format(name))
 
         return Protocol(
             refs=refs,
