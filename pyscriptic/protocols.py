@@ -22,7 +22,11 @@ class UnboundProtocol(object):
     """
     def __init__(self, instructions):
         self.instructions = instructions
-        self.refs = set(i.get_container_refs() for i in instructions)
+        self.refs = set(
+            name
+            for op in instructions
+            for name in op.get_container_refs()
+        )
 
     def bind_protocol(self, refs):
         """
