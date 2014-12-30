@@ -21,6 +21,7 @@ def _available_container_ids():
         return _AVAILABLE_CONTAINERS_IDS
 
     _AVAILABLE_CONTAINERS_IDS = set(i.container_id for i in list_containers())
+    return _AVAILABLE_CONTAINERS_IDS
 
 class Reference(object):
     """
