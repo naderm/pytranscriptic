@@ -9,6 +9,45 @@ submitted to run on Transcriptic's platform.
 """
 from pyscriptic import runs
 
+class UnboundProtocol(object):
+    """
+    Unbound protocols include a list of instructions, but no links between the
+    container names listed in the instructions and the physical containers to
+    create or available in storage on Transcriptic's platform.
+
+    Attributes
+    ----------
+    instructions : list of :class:`pyscriptic.instructions.Operation`
+    refs : set of str
+    """
+    def __init__(self, instructions):
+        self.instructions = instructions
+        self.refs = set(i.get_container_refs() for i in instructions)
+
+    def bind_protocol(self, refs):
+        """
+        Binds a protocol to a list of references, linking an abstract
+        description of an experiment to one that can run on Transcriptic's
+        platform.
+
+        Parameters
+        ----------
+        refs : dict of str, :class:`pyscriptic.refs.Reference`
+
+        Returns
+        -------
+        :class:`pyscriptic.protocols.Protocol`
+        """
+        for name in self.refs:
+            if name not in refs:
+                raise KeyError("Missing link for container name: {}"
+                               .format(name))
+
+        return Protocol(
+            refs=refs,
+            instructions=self.instructions,
+            )
+
 class Protocol(object):
     """
     Protocols are composed of a list of instructions, along with a mapping of
@@ -16,7 +55,7 @@ class Protocol(object):
 
     Attributes
     ----------
-    refs : list of :class:`pyscriptic.refs.Reference`
+    refs : dict of str, :class:`pyscriptic.refs.Reference`
     instructions : list of :class:`pyscriptic.instructions.Operation`
 
     Notes
