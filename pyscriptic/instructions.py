@@ -6,9 +6,51 @@ Notes
 .. [1] https://www.transcriptic.com/platform/#instr_storage
 """
 
+import collections
+
 from pyscriptic.storage import STORAGE_LOCATIONS
 from pyscriptic.measures import check_volume, check_duration, check_speed, \
      check_length, check_temperature, check_flowrate
+
+def _container_name(name):
+    """
+    For a given container or well name, return just the container name.
+
+    Parameters
+    ----------
+    name : str
+
+    Returns
+    -------
+    str
+    """
+    return name.split("/", 1)[0]
+
+def _flatten_attrs(obj, attr_names):
+    """
+    Take an object and flatten a list of attribute names into one set,
+    processing each name with the _container_name function.
+
+    Parameters
+    ----------
+    obj : object
+    attr_names : list of str
+
+    Returns
+    -------
+    set of str
+    """
+    ret = set()
+    for attr_name in attr_names:
+        if not hasattr(obj, attr_name):
+            continue
+        attr = getattr(obj, attr_name)
+        if isinstance(attr, collections.Iterable):
+            for val in attr:
+                ret.add(_container_name(val))
+        elif attr is not None:
+            ret.add(_container_name(attr))
+    return ret
 
 # Reference:
 class Operation(object):
@@ -20,7 +62,8 @@ class Operation(object):
     ----------
     op : str
     """
-    pass
+    def get_container_refs(self):
+        return _flatten_attrs(self, ["object", "objects"])
 
 # Liquid Handling
 # Note: all speeds are in microliters per second
@@ -38,6 +81,13 @@ class PipetteOp(Operation):
 
     def __init__(self, groups):
         self.groups = groups
+
+    def get_container_refs(self):
+        return set(
+            name
+            for group in self.groups
+            for name in group.get_container_refs()
+        )
 
 class PrePostMix(object):
     """
@@ -62,7 +112,13 @@ class PipetteGroup(object):
     Abstract class used to describe a group of pipetting operations to occur
     using a single tip.
     """
-    pass
+    def get_container_refs(self):
+        return set(
+            name
+            for attr_name in ["transfer", "distribute", "consolidate", "mix"]
+            for detail in getattr(self, attr_name, [])
+            for name in detail.get_container_refs()
+        )
 
 class TransferDetails(object):
     """
@@ -97,6 +153,9 @@ class TransferDetails(object):
         self.mix_before = mix_before
         self.mix_after = mix_after
         self.repetitions = repetitions
+
+    def get_container_refs(self):
+        return _flatten_attrs(self, ["from_", "to", "well"])
 
 class TransferGroup(PipetteGroup):
     """
@@ -148,6 +207,14 @@ class DistributeGroup(PipetteGroup):
             mix_after=mix_after,
         )]
 
+    def get_container_refs(self):
+        ret = set()
+        for i in self.transfer:
+            ret.add(i.from_)
+            for j in i.to:
+                ret.add(j)
+        return ret
+
 class ConsolidateGroup(PipetteGroup):
     """
     Group used to describe a consolidate operation, from many wells to one well.
@@ -197,7 +264,7 @@ class CoverOp(Operation):
     """
     Attributes
     ----------
-    container : str
+    object : str
     lid : str
 
     Notes
@@ -216,7 +283,7 @@ class UncoverOp(Operation):
     """
     Attributes
     ----------
-    container : str
+    object : str
 
     Notes
     -----
@@ -225,13 +292,13 @@ class UncoverOp(Operation):
     op = "uncover"
 
     def __init__(self, container):
-        self.container = container
+        self.object = container
 
 class SealOp(Operation):
     """
     Attributes
     ----------
-    container : str
+    object : str
 
     Notes
     -----
@@ -240,13 +307,13 @@ class SealOp(Operation):
     op = "seal"
 
     def __init__(self, container):
-        self.container = container
+        self.object = container
 
 class UnsealOp(Operation):
     """
     Attributes
     ----------
-    container : str
+    object : str
 
     Notes
     -----
@@ -255,14 +322,14 @@ class UnsealOp(Operation):
     op = "unseal"
 
     def __init__(self, container):
-        self.container = container
+        self.object = container
 
 # DNA Sequencing
 class SangerSeqOp(Operation):
     """
     Attributes
     ----------
-    container : str
+    object : str
     dataref : str
 
     Notes
@@ -271,8 +338,8 @@ class SangerSeqOp(Operation):
     """
     op = "sangerseq"
 
-    def __init__(self, container, dataref):
-        self.container = container
+    def __init__(self, well, dataref):
+        self.object = well
         self.dataref = dataref
 
 # Centrifugation
@@ -280,7 +347,7 @@ class SpinOp(Operation):
     """
     Attributes
     ----------
-    container : str
+    object : str
     speed : str
     duration : str
 
@@ -304,7 +371,7 @@ class ThermocycleOp(Operation):
     """
     Attributes
     ----------
-    container : str
+    object : str
     volume : str
     groups : list of :class:`pyscriptic.instructions.ThermocycleGroup`
     dyes : dict of str, list of str
@@ -320,7 +387,7 @@ class ThermocycleOp(Operation):
     def __init__(self, container, volume, groups, dyes=None, dataref=None, melting=None):
         assert check_volume(volume)
 
-        self.container = container
+        self.object = container
         self.volume = volume
         self.groups = groups
         self.dyes = dyes
@@ -382,7 +449,7 @@ class IncubateOp(Operation):
     """
     Attributes
     ----------
-    container : str
+    object : str
     where : str
     duration : str
     shaking : bool
@@ -398,7 +465,7 @@ class IncubateOp(Operation):
         assert check_duration(duration)
         assert shaking in [True, False]
 
-        self.container = container
+        self.object = container
         self.where = where
         self.duration = duration
         self.shaking = shaking
