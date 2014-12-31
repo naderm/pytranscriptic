@@ -1,10 +1,28 @@
 
 from unittest import TestCase
 
+from pyscriptic.instructions import UncoverOp, PipetteOp, TransferGroup
+from pyscriptic.protocols import UnboundProtocol
+
 class ProtocolsTest(TestCase):
-    def test_import_module(self):
-        from pyscriptic.protocols import submit_protocol, synthesize_oligo
-        from pyscriptic.protocols import synthesize_dsdna, synthesize_plasmid
+    def test_unbound_protocol_refs(self):
+        instructions = [
+            UncoverOp("input_plate"),
+            PipetteOp([
+                TransferGroup(
+                    from_well="input_plate/A1",
+                    to_well="pcr_plate/A1",
+                    volume="4:microliter",
+                    ),
+            ]),
+        ]
+        unbound = UnboundProtocol(
+            instructions=instructions,
+        )
+        self.assertEqual(
+            unbound.refs,
+            set(["input_plate", "pcr_plate"]),
+        )
 
     def test_submit_protocol(self):
         pass
