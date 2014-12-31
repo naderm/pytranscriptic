@@ -45,11 +45,11 @@ def _flatten_attrs(obj, attr_names):
         if not hasattr(obj, attr_name):
             continue
         attr = getattr(obj, attr_name)
-        if isinstance(attr, collections.Iterable):
+        if isinstance(attr, str):
+            ret.add(_container_name(attr))
+        elif isinstance(attr, collections.Iterable):
             for val in attr:
                 ret.add(_container_name(val))
-        elif attr is not None:
-            ret.add(_container_name(attr))
     return ret
 
 # Reference:
