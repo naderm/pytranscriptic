@@ -1,6 +1,7 @@
 
 from __future__ import print_function
 import json
+from time import sleep
 
 from pyscriptic import settings, submit, project
 
@@ -68,6 +69,23 @@ def run(request, title="PyTranscript Run", dry_run=False):
             warnings=response["warnings"],
             errors=response["errors"],
             )
+
+def wait(run_id, sleep_time=10):
+    """
+    Waits for a run to complete, checking its status every so often.
+
+    Parameters
+    ----------
+    run_id : str
+    sleep_time : float, optional
+        The time to sleep between checks on a run's status, in seconds.
+    """
+    while True:
+        run_props = get_run(run_id)
+        # XXX: What is the correct status for "done"?
+        if run_props.status not in ["active", "unplanned"]:
+            break
+        sleep(sleep_time)
 
 def get_run(run_id):
     """
