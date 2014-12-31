@@ -28,7 +28,7 @@ class ContainerType(object):
         self.well_dead_volume = well_dead_volume
         self.capabilities = capabilities
 
-# XXX: Which attribute is the storage name? (i.e. "warm_37")
+# XXX: Which attribute is the storage name? (i.e. "warm_37") .location?
 class ContainerProperties(object):
     """
     Lists the properties about a particular instance of a container, such as
