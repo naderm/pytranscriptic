@@ -68,7 +68,7 @@ def run(request, title="PyTranscript Run", dry_run=False):
             status=response["status"],
             warnings=response["warnings"],
             errors=response["errors"],
-            )
+        )
 
 def wait(run_id, sleep_time=10):
     """
