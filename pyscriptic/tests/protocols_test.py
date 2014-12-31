@@ -2,7 +2,8 @@
 from unittest import TestCase
 
 from pyscriptic.instructions import UncoverOp, PipetteOp, TransferGroup
-from pyscriptic.protocols import UnboundProtocol, synthesize_oligo
+from pyscriptic.protocols import UnboundProtocol, synthesize_oligo, \
+     synthesize_dsdna
 
 class ProtocolsTest(TestCase):
     def test_unbound_protocol_refs(self):
@@ -48,7 +49,20 @@ class ProtocolsTest(TestCase):
         )
 
     def test_synthesize_dsdna(self):
-        pass
+        protocol = synthesize_dsdna(
+            name="pri1-F",
+            sequence="acgtagtcgagtctgagtcagcgtacgtag",
+        )
+        self.assertEqual(
+            protocol,
+            {
+                "type": "synthesize",
+                "name": "pri1-F",
+                "data": {
+                    "sequence": "acgtagtcgagtctgagtcagcgtacgtag",
+                },
+            },
+        )
 
     def test_synthesize_plasmid(self):
         pass
