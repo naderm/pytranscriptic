@@ -66,6 +66,14 @@ class Operation(object):
     op : str
     """
     def get_container_refs(self):
+        """
+        Gets all containers that an instance of this operation performs actions
+        upon.
+
+        Returns
+        -------
+        set of str
+        """
         return _flatten_attrs(self, ["object", "objects"])
 
 
