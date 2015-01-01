@@ -6,6 +6,7 @@ Notes
 .. [1] https://www.transcriptic.com/platform/#instructions
 """
 
+
 def _check_measurement(measurement, allowed_units):
     """
     Checks a measurement to ensure it's quantity is a number and its units are
@@ -17,8 +18,11 @@ def _check_measurement(measurement, allowed_units):
     allowed_units : list of str
     """
     quantity, unit = measurement.split(":", 1)
-    return unit in allowed_units and \
-      all(i.isdigit() or i == "." for i in quantity)
+    return (
+        unit in allowed_units and
+        all(i.isdigit() or i == "." for i in quantity)
+    )
+
 
 def check_volume(volume):
     """
@@ -31,7 +35,8 @@ def check_volume(volume):
     return _check_measurement(
         volume,
         ["nanoliter", "microliter", "milliliter"],
-        )
+    )
+
 
 def check_duration(duration):
     """
@@ -44,7 +49,8 @@ def check_duration(duration):
     return _check_measurement(
         duration,
         ["millisecond", "second", "minute", "hour"],
-        )
+    )
+
 
 def check_speed(speed):
     """
@@ -57,7 +63,8 @@ def check_speed(speed):
     return _check_measurement(
         speed,
         ["rpm"],
-        )
+    )
+
 
 def check_length(length):
     """
@@ -70,7 +77,8 @@ def check_length(length):
     return _check_measurement(
         length,
         ["nanometer"],
-        )
+    )
+
 
 def check_temperature(temperature):
     """
@@ -83,7 +91,8 @@ def check_temperature(temperature):
     return _check_measurement(
         temperature,
         ["celsius"],
-        )
+    )
+
 
 def check_matter(matter):
     """
@@ -96,7 +105,8 @@ def check_matter(matter):
     return _check_measurement(
         matter,
         ["nanomole", "micromole"],
-        )
+    )
+
 
 def check_flowrate(flowrate):
     """
@@ -109,4 +119,4 @@ def check_flowrate(flowrate):
     return _check_measurement(
         flowrate,
         ["microliter/second"],
-        )
+    )
