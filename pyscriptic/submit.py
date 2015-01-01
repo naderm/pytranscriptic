@@ -1,8 +1,10 @@
 
 from inspect import ismethod, getmembers
-import requests, json
+import requests
+import json
 
 from pyscriptic import settings
+
 
 def pyobj_to_std_types(obj):
     """
@@ -28,7 +30,7 @@ def pyobj_to_std_types(obj):
         return {
             key: pyobj_to_std_types(val)
             for key, val in obj.items()
-            }
+        }
     elif isinstance(obj, object):
         return {
             key.rstrip("_"): pyobj_to_std_types(getattr(obj, key))
@@ -37,11 +39,12 @@ def pyobj_to_std_types(obj):
                 lambda x: not ismethod(x) and x is not None,
                 )
             if not key.startswith("_")
-            }
+        }
     else:
         raise Exception(
             "Unable to convert type to standard type: {}".format(type(obj))
-            )
+        )
+
 
 def _get_headers():
     """
@@ -57,6 +60,7 @@ def _get_headers():
         "Content-Type": "application/json",
         "Accept": "application/json",
         }
+
 
 def get_request(relative_url):
     """
@@ -75,17 +79,18 @@ def get_request(relative_url):
     url = "{}/{}".format(
         settings.get_base_url(),
         relative_url,
-        )
+    )
     response = requests.get(
         url,
         headers=_get_headers(),
-        )
+    )
     if response.status_code == 200:
         return response.json()
     else:
         raise Exception(
             json.dumps(response.json(), indent=2)
-            )
+        )
+
 
 def post_request(relative_url, content):
     """
@@ -106,15 +111,15 @@ def post_request(relative_url, content):
     url = "{}/{}".format(
         settings.get_base_url(),
         relative_url,
-        )
+    )
     response = requests.post(
         url,
         json.dumps(pyobj_to_std_types(content)),
         headers=_get_headers(),
-        )
+    )
     if response.status_code == 200:
         return response.json()
     else:
         raise Exception(
             json.dumps(response.json(), indent=2)
-            )
+        )
