@@ -7,6 +7,7 @@ TRANSCRIPTIC_KEY = None
 ORGANIZATION = None
 PROJECT = None
 
+
 def get_base_url():
     """
     Gets the base url used to access Transcriptic's services.
@@ -16,6 +17,7 @@ def get_base_url():
     str
     """
     return BASE_URL
+
 
 def get_email():
     """
@@ -29,6 +31,7 @@ def get_email():
         return TRANSCRIPTIC_EMAIL
     return os.environ['TRANSCRIPTIC_EMAIL']
 
+
 def get_key():
     """
     Gets the private key used to access Transcriptic's services.
@@ -41,6 +44,7 @@ def get_key():
         return TRANSCRIPTIC_KEY
     return os.environ['TRANSCRIPTIC_KEY']
 
+
 def get_organization():
     """
     Gets the currently active organization.
@@ -50,6 +54,7 @@ def get_organization():
     str
     """
     return ORGANIZATION
+
 
 def get_project():
     """
