@@ -12,6 +12,7 @@ import warnings
 
 from pyscriptic import runs
 
+
 class UnboundProtocol(object):
     """
     Unbound protocols include a list of instructions, but no links between the
@@ -58,7 +59,8 @@ class UnboundProtocol(object):
         return Protocol(
             refs=refs,
             instructions=self.instructions,
-            )
+        )
+
 
 class Protocol(object):
     """
@@ -78,10 +80,11 @@ class Protocol(object):
         self.refs = refs
         self.instructions = instructions
 
+
 def submit_protocol(protocol, title="PyTranscript Run", dry_run=False):
     """
-    Submits a protocol to run on Transcript's platform. A protocol is made up of
-    a list of references, linking container names to the actual aliquots in
+    Submits a protocol to run on Transcript's platform. A protocol is made up
+    of a list of references, linking container names to the actual aliquots in
     storage / to be stored on completion. High-level API requests can also use
     this function by supplying the dict returned by one of the other functions
     in this module.
@@ -105,6 +108,7 @@ def submit_protocol(protocol, title="PyTranscript Run", dry_run=False):
         title=title,
         dry_run=dry_run,
     )
+
 
 def synthesize_oligo(name, sequence, purity, scale):
     """
@@ -142,6 +146,7 @@ def synthesize_oligo(name, sequence, purity, scale):
     }
     return request
 
+
 def synthesize_dsdna(name, sequence):
     """
     Synthesizes a longer stretch of dsDNA, up to 3 kb in size.
@@ -169,6 +174,7 @@ def synthesize_dsdna(name, sequence):
         },
     }
     return request
+
 
 # Implementation awaiting further documentation
 def synthesize_plasmid():
