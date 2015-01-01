@@ -5,6 +5,7 @@ from time import sleep
 
 from pyscriptic import settings, submit, project
 
+
 class RunProperties(object):
     """
 
@@ -30,6 +31,7 @@ class RunProperties(object):
         self.warnings = warnings
         self.errors = errors
 
+
 def run(request, title="PyTranscript Run", dry_run=False):
     """
     Submits a run request for the currently active project. The request should
@@ -49,11 +51,11 @@ def run(request, title="PyTranscript Run", dry_run=False):
     url = "{}/{}/runs".format(
         settings.get_organization(),
         settings.get_project(),
-        )
+    )
     content = {
         "title": title,
         "request": request,
-        }
+    }
     if dry_run:
         print("Posting to \"{}/{}\":".format(settings.get_base_url(), url))
         print(json.dumps(submit.pyobj_to_std_types(content), indent=2))
@@ -61,7 +63,7 @@ def run(request, title="PyTranscript Run", dry_run=False):
         response = submit.post_request(
             url,
             content,
-            )
+        )
         return RunProperties(
             run_id=response["id"],
             title=response["title"],
@@ -69,6 +71,7 @@ def run(request, title="PyTranscript Run", dry_run=False):
             warnings=response["warnings"],
             errors=response["errors"],
         )
+
 
 def wait(run_id, sleep_time=10):
     """
@@ -87,6 +90,7 @@ def wait(run_id, sleep_time=10):
             break
         sleep(sleep_time)
 
+
 def get_run(run_id):
     """
     Gets information about a single run within the currently active project.
@@ -104,10 +108,10 @@ def get_run(run_id):
         settings.get_organization(),
         settings.get_project(),
         run_id,
-        )
+    )
     response = submit.get_request(
         url,
-        )
+    )
     return RunProperties(
         run_id=response["id"],
         title=response["title"],
@@ -118,6 +122,7 @@ def get_run(run_id):
             instructions=response["protocol"]["instructions"],
         ),
     )
+
 
 def list_runs():
     """
