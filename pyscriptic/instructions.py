@@ -10,7 +10,8 @@ import collections
 
 from pyscriptic.storage import STORAGE_LOCATIONS
 from pyscriptic.measures import check_volume, check_duration, check_speed, \
-     check_length, check_temperature, check_flowrate
+    check_length, check_temperature, check_flowrate
+
 
 def _container_name(name):
     """
@@ -25,6 +26,7 @@ def _container_name(name):
     str
     """
     return name.split("/", 1)[0]
+
 
 def _flatten_attrs(obj, attr_names):
     """
@@ -52,6 +54,7 @@ def _flatten_attrs(obj, attr_names):
                 ret.add(_container_name(val))
     return ret
 
+
 # Reference:
 class Operation(object):
     """
@@ -64,6 +67,7 @@ class Operation(object):
     """
     def get_container_refs(self):
         return _flatten_attrs(self, ["object", "objects"])
+
 
 # Liquid Handling
 # Note: all speeds are in microliters per second
@@ -89,6 +93,7 @@ class PipetteOp(Operation):
             for name in group.get_container_refs()
         )
 
+
 class PrePostMix(object):
     """
     Describes a mixing operation before a transfer commences.
@@ -107,6 +112,7 @@ class PrePostMix(object):
         self.speed = speed
         self.repetitions = repetitions
 
+
 class PipetteGroup(object):
     """
     Abstract class used to describe a group of pipetting operations to occur
@@ -119,6 +125,7 @@ class PipetteGroup(object):
             for detail in getattr(self, attr_name, [])
             for name in detail.get_container_refs()
         )
+
 
 class TransferDetails(object):
     """
@@ -157,6 +164,7 @@ class TransferDetails(object):
     def get_container_refs(self):
         return _flatten_attrs(self, ["from_", "to", "well"])
 
+
 class TransferGroup(PipetteGroup):
     """
     Group used to describe a transfer operation, from one well to one well.
@@ -185,6 +193,7 @@ class TransferGroup(PipetteGroup):
             mix_before=mix_before,
             mix_after=mix_after,
         )]
+
 
 class DistributeGroup(PipetteGroup):
     """
@@ -215,9 +224,11 @@ class DistributeGroup(PipetteGroup):
                 ret.add(j)
         return ret
 
+
 class ConsolidateGroup(PipetteGroup):
     """
-    Group used to describe a consolidate operation, from many wells to one well.
+    Group used to describe a consolidate operation, from many wells to one
+    well.
 
     Attributes
     ----------
@@ -235,6 +246,7 @@ class ConsolidateGroup(PipetteGroup):
             dispense_speed=dispense_speed,
             mix_before=mix_before,
         )]
+
 
 class MixGroup(PipetteGroup):
     """
@@ -259,6 +271,7 @@ class MixGroup(PipetteGroup):
             repetitions=repetitions,
         )]
 
+
 # Covers and Sealing
 class CoverOp(Operation):
     """
@@ -279,6 +292,7 @@ class CoverOp(Operation):
         self.object = container
         self.lid = lid
 
+
 class UncoverOp(Operation):
     """
     Attributes
@@ -293,6 +307,7 @@ class UncoverOp(Operation):
 
     def __init__(self, container):
         self.object = container
+
 
 class SealOp(Operation):
     """
@@ -309,6 +324,7 @@ class SealOp(Operation):
     def __init__(self, container):
         self.object = container
 
+
 class UnsealOp(Operation):
     """
     Attributes
@@ -323,6 +339,7 @@ class UnsealOp(Operation):
 
     def __init__(self, container):
         self.object = container
+
 
 # DNA Sequencing
 class SangerSeqOp(Operation):
@@ -341,6 +358,7 @@ class SangerSeqOp(Operation):
     def __init__(self, well, dataref):
         self.object = well
         self.dataref = dataref
+
 
 # Centrifugation
 class SpinOp(Operation):
@@ -366,6 +384,7 @@ class SpinOp(Operation):
         self.speed = speed
         self.duration = duration
 
+
 # Thermocycling
 class ThermocycleOp(Operation):
     """
@@ -384,7 +403,8 @@ class ThermocycleOp(Operation):
     """
     op = "thermocycle"
 
-    def __init__(self, container, volume, groups, dyes=None, dataref=None, melting=None):
+    def __init__(self, container, volume, groups, dyes=None, dataref=None,
+                 melting=None):
         assert check_volume(volume)
 
         self.object = container
@@ -393,6 +413,7 @@ class ThermocycleOp(Operation):
         self.dyes = dyes
         self.dataref = dataref
         self.melting = melting
+
 
 class ThermocycleGroup(object):
     """
@@ -404,6 +425,7 @@ class ThermocycleGroup(object):
     def __init__(self, cycles, steps):
         self.cycles = cycles
         self.steps = steps
+
 
 class ThermocycleStep(object):
     """
@@ -421,6 +443,7 @@ class ThermocycleStep(object):
         self.duration = duration
         self.temperature = temperature
         self.read = read
+
 
 class MeltingStep(object):
     """
@@ -443,6 +466,7 @@ class MeltingStep(object):
         self.end = end
         self.increment = increment
         self.rate = rate
+
 
 # Incubation
 class IncubateOp(Operation):
@@ -469,6 +493,7 @@ class IncubateOp(Operation):
         self.where = where
         self.duration = duration
         self.shaking = shaking
+
 
 # Spectrophotometry
 class AbsorbanceOp(Operation):
@@ -499,6 +524,7 @@ class AbsorbanceOp(Operation):
         self.num_flashes = num_flashes
         self.dataref = dataref
 
+
 class FluorescenceOp(Operation):
     """
     Attributes
@@ -525,6 +551,7 @@ class FluorescenceOp(Operation):
         self.num_flashes = num_flashes
         self.dataref = dataref
 
+
 class LuminescenceOp(Operation):
     """
     Attributes
@@ -547,12 +574,16 @@ class LuminescenceOp(Operation):
         self.wells = wells
         self.dataref = dataref
 
+
 # Gel Electrophoresis
 ALLOWED_GEL_MATRICES = [
     "agarose(96,2.0%)", "agarose(48,4.0%)", "agarose(48,2.0%)",
     "agarose(12,1.2%)", "agarose(8,0.8%)",
-    ]
+]
+
 ALLOWED_GEL_LADDERS = ["ladder1", "ladder2"]
+
+
 class GelSeparateOp(Operation):
     """
     Attributes
@@ -580,6 +611,7 @@ class GelSeparateOp(Operation):
         self.duration = duration
         self.dataref = dataref
 
+
 # Flow Cytometry (Coming Soon)
 class FlowCytometryOp(Operation):
     """
@@ -591,6 +623,7 @@ class FlowCytometryOp(Operation):
 
     def __init__(self):
         raise NotImplementedError
+
 
 # Liquid Chromatography (Coming soon)
 class HPLCOp(Operation):
@@ -606,6 +639,7 @@ class HPLCOp(Operation):
     def __init__(self):
         raise NotImplementedError
 
+
 class FPLCOp(Operation):
     """
     Fast Protein Liquid Chromatography Operation
@@ -618,6 +652,7 @@ class FPLCOp(Operation):
 
     def __init__(self):
         raise NotImplementedError
+
 
 # Mass Spectrometry (Coming soon)
 class MassSpectrometryOp(Operation):
