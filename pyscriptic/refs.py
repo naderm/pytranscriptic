@@ -4,6 +4,7 @@ from pyscriptic.storage import STORAGE_LOCATIONS
 
 _AVAILABLE_CONTAINERS_IDS = None
 
+
 def _available_container_ids():
     """
     This helper function fetchs a list of all containers available to the
@@ -23,6 +24,7 @@ def _available_container_ids():
     _AVAILABLE_CONTAINERS_IDS = set(i.container_id for i in list_containers())
     return _AVAILABLE_CONTAINERS_IDS
 
+
 class Reference(object):
     """
     Contains the information to either create or link a given container to a
@@ -40,7 +42,8 @@ class Reference(object):
     .. [1] https://www.transcriptic.com/platform/#instr_access
     """
 
-    def __init__(self, container_id=None, new=None, store_where=None, discard=False):
+    def __init__(self, container_id=None, new=None, store_where=None,
+                 discard=False):
         assert (container_id is not None) != (new is not None)
         assert (store_where is not None) != (discard)
         assert store_where in STORAGE_LOCATIONS.keys() or store_where is None
