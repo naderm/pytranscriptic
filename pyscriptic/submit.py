@@ -41,7 +41,7 @@ def pyobj_to_std_types(obj):
             if not key.startswith("_")
         }
     else:
-        raise Exception(
+        raise TypeError(
             "Unable to convert type to standard type: {}".format(type(obj))
         )
 
