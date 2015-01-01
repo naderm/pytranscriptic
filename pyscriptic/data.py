@@ -1,6 +1,7 @@
 
 from pyscriptic import settings, submit
 
+
 class DataProperties(object):
     """
     Attributes
@@ -20,6 +21,7 @@ class DataProperties(object):
         self.dimensionality = dimensionality
         self.size = size
         self.data = data
+
 
 def get_run_data(run_id):
     """
@@ -41,10 +43,10 @@ def get_run_data(run_id):
         settings.get_organization(),
         settings.get_project(),
         run_id,
-        )
+    )
     response = submit.get_request(
         url,
-        )
+    )
     return DataProperties(
         data_id=response["id"],
         device_class=response["device_class"],
@@ -52,7 +54,8 @@ def get_run_data(run_id):
         dimensionality=response["dimensionality"],
         size=response["size"],
         data=response["data"],
-        )
+    )
+
 
 # Get monitoring data (Coming soon)
 def get_monitoring_data():
