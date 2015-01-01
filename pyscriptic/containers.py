@@ -1,6 +1,7 @@
 
 from pyscriptic import settings, submit
 
+
 class ContainerType(object):
     """
     Lists information about a particular container type, such as a 96-well
@@ -27,6 +28,7 @@ class ContainerType(object):
         self.max_well_capacity = max_well_capacity
         self.well_dead_volume = well_dead_volume
         self.capabilities = capabilities
+
 
 # XXX: Which attribute is the storage name? (i.e. "warm_37") .location?
 class ContainerProperties(object):
@@ -63,6 +65,7 @@ class ContainerProperties(object):
         self.device = device
         self.aliquots = aliquots
 
+
 class ContainerDevice(object):
     """
     Attributes
@@ -79,6 +82,7 @@ class ContainerDevice(object):
         self.make = make
         self.model = model
         self.device_class = device_class
+
 
 class ContainerAliquot(object):
     """
@@ -100,11 +104,13 @@ class ContainerAliquot(object):
         self.created_by_run_id = created_by_run_id
         self.well_idx = well_idx
 
+
 CONTAINERS = {
     "96-pcr": ContainerType(
         "96 well V-bottom (PCR) plate",
         96, 160, 15,
-        ["pipette", "sangerseq", "spin", "thermocycle", "incubate", "gel_separate"],
+        ["pipette", "sangerseq", "spin", "thermocycle", "incubate",
+         "gel_separate"],
     ),
     "96-flat": ContainerType(
         "96 well flat-bottom optically clear plate",
@@ -126,7 +132,8 @@ CONTAINERS = {
     "384-pcr": ContainerType(
         "384 well V-bottom (PCR) plate",
         384, 50, 8,
-        ["pipette", "sangerseq", "spin", "thermocycle", "incubate", "gel_separate"],
+        ["pipette", "sangerseq", "spin", "thermocycle", "incubate",
+         "gel_separate"],
     ),
     "384-flat": ContainerType(
         "384 well flat-bottom optically clear plate",
@@ -151,6 +158,7 @@ CONTAINERS = {
     ),
 }
 
+
 def _device_from_response(response):
     """
     Parameters
@@ -168,6 +176,7 @@ def _device_from_response(response):
         model=response["model"],
         device_class=response["device_class"],
     )
+
 
 def _aliquot_from_response(response):
     """
@@ -187,6 +196,7 @@ def _aliquot_from_response(response):
         created_by_run_id=response["created_by_run_id"],
         well_idx=response["well_idx"],
     )
+
 
 def _container_properties_from_response(response):
     """
@@ -214,10 +224,11 @@ def _container_properties_from_response(response):
         aliquots=[_aliquot_from_response(i) for i in response["aliquots"]],
     )
 
+
 def get_container(container_id):
     """
-    Retrieves information about a given container available within the currently
-    active organization.
+    Retrieves information about a given container available within the
+    currently active organization.
 
     Parameters
     ----------
@@ -240,6 +251,7 @@ def get_container(container_id):
     )
     return _container_properties_from_response(response)
 
+
 def list_containers():
     """
     Lists all containers available within the currently active organization.
@@ -257,6 +269,7 @@ def list_containers():
         url,
     )
     return [_container_properties_from_response(i) for i in response]
+
 
 def mail_container(container_id, address_id, condition):
     """
