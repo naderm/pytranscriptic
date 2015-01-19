@@ -5,7 +5,7 @@
 [![Documentation Status](https://readthedocs.org/projects/pyscriptic/badge/?version=latest)](https://readthedocs.org/projects/pyscriptic/?badge=latest)
 
 
-Python wrapper around Transcriptic's API. Currently written to support the α-5 version of the API.
+Python wrapper around Transcriptic's API. Currently written to support the α-6 version of the API.
 
 ## Authors
 

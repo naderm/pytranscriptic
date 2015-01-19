@@ -120,3 +120,16 @@ def check_flowrate(flowrate):
         flowrate,
         ["microliter/second"],
     )
+
+def check_acceleration(acceleration):
+    """
+    Checks that an acceleration has a correct quantity and allowed units.
+
+    Parameters
+    ----------
+    acceleration : str
+    """
+    return _check_measurement(
+        acceleration,
+        ["meter/second^2", "g"]
+        )

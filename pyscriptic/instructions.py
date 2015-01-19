@@ -10,7 +10,7 @@ import collections
 
 from pyscriptic.storage import STORAGE_LOCATIONS
 from pyscriptic.measures import check_volume, check_duration, check_speed, \
-    check_length, check_temperature, check_flowrate
+    check_length, check_temperature, check_flowrate, check_acceleration
 
 
 def _container_name(name):
@@ -375,6 +375,7 @@ class SpinOp(Operation):
     ----------
     object : str
     speed : str
+    acceleration : str
     duration : str
 
     Notes
@@ -383,13 +384,15 @@ class SpinOp(Operation):
     """
     op = "spin"
 
-    def __init__(self, container, speed, duration):
+    def __init__(self, container, speed, duration, acceleration=None):
         assert speed <= 4000
-        assert check_speed(speed)
+        assert speed is None or check_speed(speed)
         assert check_duration(duration)
+        assert acceleration is None or check_acceleration(acceleration)
 
         self.object = container
         self.speed = speed
+        self.acceleration = acceleration
         self.duration = duration
 
 
